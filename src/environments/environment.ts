@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  SERVER_URL: `http://www.oldgerry.com/ifm/cxf/EchoService`,
   production: false
 };
 
