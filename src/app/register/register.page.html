@@ -1,9 +1,37 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>register</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>用户注册</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+
+  <form #form="ngForm">
+    <ion-item class="ion-margin-top">
+      <ion-icon slot="start" name="person"></ion-icon>
+      <ion-input name="phone" [(ngModel)]="model.phone" type="text" placeholder="请输入手机号" required>
+      </ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-top">
+      <ion-icon slot="start" name="lock"></ion-icon>
+      <ion-input name="password" [(ngModel)]="model.password" type="password" placeholder="请输入密码" required>
+      </ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-top">
+      <ion-icon slot="start" name="lock"></ion-icon>
+      <ion-input name="code" [(ngModel)]="code" type="text" placeholder="请输入验证码" required>
+      </ion-input>
+      <ion-button #btnCode slot="end" color="primary" (click)="sendCode()">
+        <ion-label>
+          {{text}}
+        </ion-label>
+      </ion-button>
+    </ion-item>
+    <div class="ion-padding">
+      <ion-checkbox name="agree" style="vertical-align:middle;" [(ngModel)]="agree" slot="start" color="primary"></ion-checkbox>
+      <ion-label style="vertical-align:middle;">我已阅读并同意 <a [routerLink]="['/agreement']">{{agreement}}</a> </ion-label>
+    </div>
+    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">注册</ion-button>
+  </form>
 
 </ion-content>

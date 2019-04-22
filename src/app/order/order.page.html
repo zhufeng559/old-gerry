@@ -1,7 +1,18 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>order</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>首页</ion-title>
   </ion-toolbar>
+  <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="type">
+    <ion-segment-button value="1">
+      <ion-label>建单</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="2">
+      <ion-label>历史</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="3">
+      <ion-label>账单</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 <ion-content>

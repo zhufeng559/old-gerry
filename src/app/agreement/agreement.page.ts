@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-agreement',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AgreementPage implements OnInit {
 
-  constructor() { }
+  constructor(public router: Router, ) { }
 
   ngOnInit() {
   }
 
+  submit () {
+    this.router.navigate(['/register'], {
+      queryParams: {
+        agree: true
+      }
+    });
+  }
 }

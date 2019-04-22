@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', loadChildren: './login/login.module#LoginPageModule' },
+  { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' },
+  { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
   { path: 'agreement', loadChildren: './agreement/agreement.module#AgreementPageModule' },
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: 'my', loadChildren: './my/my.module#MyPageModule' },
   { path: 'my-message', loadChildren: './my-message/my-message.module#MyMessagePageModule' },
   { path: 'person-info', loadChildren: './person-info/person-info.module#PersonInfoPageModule' },
-  { path: 'check-version', loadChildren: './check-version/check-version.module#CheckVersionPageModule' }
+  { path: 'check-version', loadChildren: './check-version/check-version.module#CheckVersionPageModule' },
 ];
 @NgModule({
   imports: [

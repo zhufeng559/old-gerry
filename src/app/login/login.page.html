@@ -1,9 +1,24 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>登录</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+
+  <form #form="ngForm">
+    <ion-item class="ion-margin-top">
+      <ion-icon slot="start" name="person"></ion-icon>
+      <ion-input name="userName" [(ngModel)]="model.userName" type="text" placeholder="请输入用户名" required>
+      </ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-top">
+      <ion-icon slot="start" name="lock"></ion-icon>
+      <ion-input name="password" [(ngModel)]="model.password" type="password" placeholder="请输入密码" required>
+      </ion-input>
+    </ion-item>
+    <div class="ion-padding"><a style="float: left;" [routerLink]="['/register']">我要注册</a><a style="float: right;" [routerLink]="['/forget-password']">忘记密码</a></div>
+    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">登录</ion-button>
+  </form>
 
 </ion-content>
