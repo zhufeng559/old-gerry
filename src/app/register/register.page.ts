@@ -16,6 +16,7 @@ export class RegisterPage implements OnInit {
   model = {
     phone: '',
     password: '',
+    name: ''
   };
   code = '';
   text = '获取验证码';

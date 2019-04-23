@@ -7,6 +7,32 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="上拉刷新" refreshingSpinner="circles"
+      refreshingText="加载中...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+
+    <ion-item *ngFor="let item of list">
+      <ion-thumbnail slot="start">
+        <img *ngIf="item?.pack_pic" [src]="item?.pack_pic">
+      </ion-thumbnail>
+      <ion-label>
+        <p>箱号:{{item?.ctnno}}</p>
+        <p>提单号:{{item?.ladingbillnumber}}</p>
+        <p>时间:{{item?.create_time | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多数据...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
