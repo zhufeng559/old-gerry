@@ -36,7 +36,15 @@ export class OrderHistoryPage implements OnInit {
     if (user) {
       this.condition.token = user.token;
     }
-    this.load();
+  }
+
+  ionViewWillEnter() {
+    this.activeRoute.queryParams.subscribe((params: Params) => {
+      this.condition.create_time = params['create_time'] || '' ;
+      this.condition.state = params['state'] || '';
+      this.condition.ctnNo = params['keyword'] || '';
+      this.load();
+    });
   }
 
   load() {
@@ -81,4 +89,16 @@ export class OrderHistoryPage implements OnInit {
     }, 300);
   }
 
+  getStatus(item) {
+    if (item.state === '1') {
+      return '已发送';
+    } else if (item.state === '2') {
+      return '未发送';
+    }
+    return '未知状态';
+  }
+
+  gotoOrderSearch() {
+    this.router.navigate(['/order-search']);
+  }
 }

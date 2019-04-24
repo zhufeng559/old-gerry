@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  // SERVER_URL: `http://61.160.213.88:7999/api`,
-  // UPLOAD_URL: `http://61.160.213.88:7999/api/upload/files`,
-  SERVER_URL: ` http://localhost:59216/api`,
-  UPLOAD_URL: ` http://localhost:59216/api/upload/files`,
+  SERVER_URL: `http://61.160.213.88:7999/api`,
+  UPLOAD_URL: `http://61.160.213.88:7999/api/upload/files`,
+  // SERVER_URL: ` http://localhost:59216/api`,
+  // UPLOAD_URL: ` http://localhost:59216/api/upload/files`,
   production: false
 };
 

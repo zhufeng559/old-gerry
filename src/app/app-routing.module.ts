@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'my-message', loadChildren: './my-message/my-message.module#MyMessagePageModule' },
   { path: 'person-info', loadChildren: './person-info/person-info.module#PersonInfoPageModule' },
   { path: 'check-version', loadChildren: './check-version/check-version.module#CheckVersionPageModule' },
+  { path: 'welcome', loadChildren: './welcome/welcome.module#WelcomePageModule' },
 ];
 @NgModule({
   imports: [
