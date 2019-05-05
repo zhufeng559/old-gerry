@@ -36,7 +36,7 @@ export class LoginPage implements OnInit {
     if (this.form.valid) {
       this.http.post('/request/login', this.model).subscribe(res => {
         const r = res as any;
-        if (r.code >= 0) {
+        if (this.common.isSuccess(r.code)) {
           this.common.success().then(() => {
             this.storage.write('user', r );
             this.router.navigate(['/tabs']);

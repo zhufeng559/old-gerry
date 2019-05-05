@@ -1,9 +1,30 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>搜索</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-item>
+    <ion-label>开始日期：</ion-label>
+    <ion-datetime [(ngModel)]="model.start_time" display-format="YYYY-MM-DD" placeholder="请选择日期" cancelText="取消"
+      doneText="确定"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>结束日期：</ion-label>
+    <ion-datetime [(ngModel)]="model.end_time" display-format="YYYY-MM-DD" placeholder="请选择日期" cancelText="取消"
+      doneText="确定"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>关键字：</ion-label>
+    <ion-input style="text-align:right;" name="keyword" [(ngModel)]="model.keyword" type="text" placeholder="请输入密码">
+    </ion-input>
+  </ion-item>
+
+  <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">搜索</ion-button>
 
 </ion-content>

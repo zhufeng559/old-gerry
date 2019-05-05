@@ -1,9 +1,46 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>person-info</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>个人信息</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <form #form="ngForm">
+    <ion-item>
+      <ion-label>姓名</ion-label>
+      <ion-input style="text-align:right;" name="user_name" [(ngModel)]="model.user_name" type="text"
+        placeholder="请输入姓名">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>性别</ion-label>
+      <ion-select name="sex" [(ngModel)]="model.sex" placeholder="请选择性别" okText="确定" cancelText="取消">
+        <ion-select-option value="0">男</ion-select-option>
+        <ion-select-option value="1">女</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>昵称</ion-label>
+      <ion-input style="text-align:right;" name="nickName" [(ngModel)]="model.nickName" type="text" placeholder="请输入昵称">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>生日：</ion-label>
+      <ion-datetime name="birthdate" [(ngModel)]="model.birthdate" display-format="YYYY-MM-DD" placeholder="请选择日期"
+        cancelText="取消" doneText="确定"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>身份证号</ion-label>
+      <ion-input style="text-align:right;" name="id_number" [(ngModel)]="model.id_number" type="text"
+        placeholder="请输入身份证号">
+      </ion-input>
+    </ion-item>
+
+    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>
+  </form>
 
 </ion-content>

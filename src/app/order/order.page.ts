@@ -39,6 +39,10 @@ export class OrderPage implements OnInit {
     }
 
   ngOnInit() {
+    const user = this.common.checkLogin();
+    if (user) {
+      this.model.token = user.token;
+    }
   }
 
   segmentChanged(ev: any) {
@@ -63,7 +67,7 @@ export class OrderPage implements OnInit {
     if (this.form.valid) {
       this.http.post('/request/create_order', this.model).subscribe(res => {
         const r = res as any;
-        if (r.code >= 0) {
+        if (this.common.isSuccess(r.code)) {
           this.common.success();
         } else {
           this.common.errorSync(`建单错误{${r.resultNode}}`);
@@ -93,7 +97,8 @@ export class OrderPage implements OnInit {
           const result = JSON.parse(evt.target.responseText);
           if (result.code >= 0) {
             this.common.success('上传成功').then(() => {
-              this.model.file_id = result.rows;
+              this.model.file_id = '1557039249064';
+              this.addImage = result.rows.file_url;
             });
           } else {
             this.common.errorSync(`上传错误{${result.resultNode}}`);

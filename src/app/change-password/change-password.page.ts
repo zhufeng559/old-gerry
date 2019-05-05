@@ -47,7 +47,7 @@ export class ChangePasswordPage implements OnInit {
     if (this.form.valid) {
       this.http.post('/request/forget_password', this.model).subscribe(res => {
         const r = res as any;
-        if (r.code >= 0) {
+        if (this.common.isSuccess(r.code)) {
           this.common.success('修改成功,正在为您跳转至登录页...').then(() => {
             this.router.navigate(['/login']);
           });
@@ -73,7 +73,7 @@ export class ChangePasswordPage implements OnInit {
 
     this.http.post('/request/send_message', i).subscribe(res => {
       const r = res as any;
-      if (r.code >= 0) {
+      if (this.common.isSuccess(r.code)) {
         this.common.success();
       } else {
         this.common.errorSync(`发送验证码错误{${r.resultNode}}`);

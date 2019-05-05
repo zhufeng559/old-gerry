@@ -29,4 +29,8 @@ export class MyPage implements OnInit {
     this.storage.remove('user');
     this.router.navigate(['/login']);
   }
+
+  gotoPersonInfo() {
+    this.router.navigate(['/person-info']);
+  }
 }

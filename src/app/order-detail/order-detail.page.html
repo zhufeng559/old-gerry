@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>order-detail</ion-title>
+    <ion-title>提单号</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<form #form="ngForm">
 
-</ion-content>
+  <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">重新提交</ion-button>
+</form>
+

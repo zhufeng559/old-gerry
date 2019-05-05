@@ -48,6 +48,7 @@ export class OrderHistoryPage implements OnInit {
   }
 
   load() {
+    this.list = new Array();
     return this.http.post('/request/get_order_list' , this.condition).toPromise().then(res => {
       const r = res as any;
       if (r.code >= -1) {
@@ -100,5 +101,13 @@ export class OrderHistoryPage implements OnInit {
 
   gotoOrderSearch() {
     this.router.navigate(['/order-search']);
+  }
+
+  gotoOrderDetail(id) {
+    this.router.navigate(['/order-detail'],{
+      queryParams: {
+        id: id
+      }
+    });
   }
 }

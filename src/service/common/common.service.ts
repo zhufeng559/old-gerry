@@ -38,4 +38,8 @@ export class CommonService {
       return user;
     }
   }
+
+  isSuccess(res) {
+    return res >= 0;
+  }
 }
