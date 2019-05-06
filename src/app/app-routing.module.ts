@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'person-info', loadChildren: './person-info/person-info.module#PersonInfoPageModule' },
   { path: 'check-version', loadChildren: './check-version/check-version.module#CheckVersionPageModule' },
   { path: 'welcome', loadChildren: './welcome/welcome.module#WelcomePageModule' },
+  { path: 'feedback', loadChildren: './feedback/feedback.module#FeedbackPageModule' },
 ];
 @NgModule({
   imports: [

@@ -6,16 +6,19 @@
 
 <ion-content>
 
-  <ion-item detail>
+  <ion-item detail (click)="gotoMyMessage()">
     <ion-label>我的消息</ion-label>
   </ion-item>
-  <ion-item detail (click)="gotoPersonInfo()">
+  <ion-item detail (click)="gotoChangePassword()">
     <ion-label>修改密码</ion-label>
   </ion-item>
-  <ion-item detail>
+  <ion-item detail (click)="gotoPersonInfo()">
     <ion-label>完善个人信息</ion-label>
   </ion-item>
-  <ion-item detail>
+  <ion-item detail (click)="gotoFeedBack()">
+    <ion-label>意见反馈</ion-label>
+  </ion-item>
+  <ion-item detail (click)="gotoCheckVersion()">
     <ion-label>检查更新</ion-label>
   </ion-item>
 

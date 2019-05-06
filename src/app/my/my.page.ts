@@ -14,6 +14,8 @@ import { StorageService } from '../../service/common/storage.service';
 })
 export class MyPage implements OnInit {
 
+  user ;
+
   constructor(private http: HttpService,
     private common: CommonService,
     public router: Router,
@@ -23,14 +25,51 @@ export class MyPage implements OnInit {
     }
 
   ngOnInit() {
+    this.user = this.common.checkLogin();
   }
 
-  logout() {
-    this.storage.remove('user');
-    this.router.navigate(['/login']);
+  async logout() {
+    const alert = await this.alertCtrl.create({
+      header: '退出登录',
+      message: '确定退出登录吗?',
+      buttons: [
+        {
+          text: '取消',
+          handler: () => {
+          }
+        }, {
+          text: '确定',
+          handler: () => {
+            this.storage.remove('user');
+            this.router.navigate(['/login']);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   gotoPersonInfo() {
     this.router.navigate(['/person-info']);
+  }
+
+  gotoCheckVersion() {
+    this.router.navigate(['/check-version']);
+  }
+
+  gotoMyMessage() {
+    this.router.navigate(['/my-message']);
+  }
+
+  gotoFeedBack() {
+    this.router.navigate(['/feedback']);
+  }
+
+  gotoChangePassword() {
+    this.router.navigate(['/change-password'], {
+      queryParams: {
+        phone: this.user.rows.phone,
+      }
+    });
   }
 }

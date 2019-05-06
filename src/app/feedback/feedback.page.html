@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>意见反馈</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <form #form="ngForm">
+
+    <ion-list>
+      <ion-item lines="none">
+        <p>
+          不足之处，欢迎你给我们提建议或意见，我们虚怀若谷，我们一起成长，也欢迎你向他人宣传我们。
+        </p>
+      </ion-item>
+      <ion-item lines="none">
+        <h3>联系我们</h3>
+      </ion-item>
+      <ion-item>
+        <p>电话:xxxxxxxxxxxx</p>
+      </ion-item>
+      <ion-item>
+        <p>邮箱:xxxx@qq.com</p>
+      </ion-item>
+      <ion-item lines="none">
+        <h3>留言：</h3>
+      </ion-item>
+      <ion-item>
+        <ion-textarea name="textarea" rows="4" cols="20" [(ngModel)]="model.textarea" placeholder="投诉、建议、咨询、合作等" required></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>
+
+  </form>
+
+</ion-content>

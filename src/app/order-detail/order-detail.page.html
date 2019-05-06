@@ -1,11 +1,49 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>提单号</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>提单号{{model.ladingbillnumber}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<form #form="ngForm">
+<ion-content class="ion-padding">
 
-  <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">重新提交</ion-button>
-</form>
+  <form #form="ngForm">
+    <ion-item>
+      <ion-label>箱号</ion-label>
+      <ion-input style="text-align:right;" name="ctnno" [(ngModel)]="model.ctnno" type="text" placeholder="">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>提单号</ion-label>
+      <ion-input style="text-align:right;" name="ladingbillnumber" [(ngModel)]="model.ladingbillnumber" type="text"
+        placeholder="">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>时间</ion-label>
+      <ion-input style="text-align:right;" name="create_time" [(ngModel)]="model.create_time" type="text"
+        placeholder="">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>状态</ion-label>
+      <ion-input style="text-align:right;" name="user_name" [(ngModel)]="stateDesc" type="text" placeholder="">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>退回原因</ion-label>
+      <ion-input style="text-align:right;" name="user_name" [(ngModel)]="model.reason" type="text" placeholder="">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-img *ngIf="!model.file_url" [src]="addImage" (click)="upload()"></ion-img>
+      <ion-img *ngIf="model.file_url" [src]="model.file_url"></ion-img>
+    </ion-item>
+    <input id="imageUpload1" #imageUpload1 type="file" accept="image/*" style="display: none"
+      (change)="imageUpload(imageUpload1)" />
+    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">重新提交</ion-button>
+  </form>
 
+</ion-content>
