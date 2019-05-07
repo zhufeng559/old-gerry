@@ -25,6 +25,7 @@ export class RegisterPage implements OnInit {
   @ViewChild('btnCode') btnCode: IonButton;
   @ViewChild('form') form: NgForm;
   agree = false;
+  eye = true;
 
   constructor(private http: HttpService,
     private common: CommonService,
@@ -44,7 +45,9 @@ export class RegisterPage implements OnInit {
 
   async submit() {
     if (this.form.valid) {
+      await this.common.showLoading();
       this.http.post('/request/register', this.model).subscribe(res => {
+        this.common.hideLoading();
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
           this.common.success('注册成功,正在为您跳转至登录页...').then(() => {
@@ -53,6 +56,8 @@ export class RegisterPage implements OnInit {
         } else {
           this.common.errorSync(`注册错误{${r.resultNode}}`);
         }
+      }, err => {
+        this.common.requestError(err);
       });
     } else {
       this.common.errorSync('请完整填写信息');
@@ -69,16 +74,17 @@ export class RegisterPage implements OnInit {
       type : 0
     };
     this.setTime();
-
+    await this.common.showLoading();
     this.http.post('/request/send_message', i).subscribe(res => {
+      this.common.hideLoading();
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
-        this.common.success();
+        this.common.success('验证码已发送，请注意查收');
       } else {
         this.common.errorSync(`发送验证码错误{${r.resultNode}}`);
       }
     }, err => {
-      this.common.errorSync(`发送验证码错误{${err.message}}`);
+      this.common.requestError(err);
     });
   }
 

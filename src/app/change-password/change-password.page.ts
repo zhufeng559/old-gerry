@@ -21,6 +21,7 @@ export class ChangePasswordPage implements OnInit {
   code = '';
   text = '获取验证码';
   countdown = 60;
+  eye = true;
   @ViewChild('btnCode') btnCode: IonButton;
   @ViewChild('form') form: NgForm;
 
@@ -45,7 +46,9 @@ export class ChangePasswordPage implements OnInit {
       return;
     }
     if (this.form.valid) {
+      this.common.showLoading();
       this.http.post('/request/forget_password', this.model).subscribe(res => {
+        this.common.hideLoading();
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
           this.common.success('修改成功,正在为您跳转至登录页...').then(() => {
@@ -54,6 +57,8 @@ export class ChangePasswordPage implements OnInit {
         } else {
           this.common.errorSync(`修改密码错误{${r.resultNode}}`);
         }
+      }, err => {
+        this.common.requestError(err);
       });
     } else {
       this.common.errorSync('请完整填写信息');
@@ -70,16 +75,17 @@ export class ChangePasswordPage implements OnInit {
       type : 1
     };
     this.setTime();
-
+    this.common.showLoading();
     this.http.post('/request/send_message', i).subscribe(res => {
+      this.common.hideLoading();
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
-        this.common.success();
+        this.common.success('验证码已发送，请注意查收');
       } else {
         this.common.errorSync(`发送验证码错误{${r.resultNode}}`);
       }
     }, err => {
-      this.common.errorSync(`发送验证码错误{${err.message}}`);
+      this.common.requestError(err);
     });
   }
 

@@ -18,6 +18,7 @@ export class LoginPage implements OnInit {
     userName: '',
     password: ''
   };
+  eye = true;
   @ViewChild('form') form: NgForm;
 
   constructor(private http: HttpService,
@@ -34,10 +35,12 @@ export class LoginPage implements OnInit {
 
   async submit() {
     if (this.form.valid) {
+      await this.common.showLoading();
       this.http.post('/request/login', this.model).subscribe(res => {
+        this.common.hideLoading();
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
-          this.common.success().then(() => {
+          this.common.success('登录成功').then(() => {
             this.storage.write('user', r );
             this.router.navigate(['/tabs']);
           });
@@ -49,12 +52,11 @@ export class LoginPage implements OnInit {
               {
                 text: '忘记密码',
                 handler: () => {
-                  this.router.navigate(['/tabs']);
+                  this.router.navigate(['/forget-password']);
                 }
               }, {
                 text: '重新输入',
                 handler: () => {
-                  this.model.userName = '';
                   this.model.password = '';
                 }
               }
@@ -63,6 +65,8 @@ export class LoginPage implements OnInit {
             alert.present();
           });
         }
+      }, err => {
+        this.common.requestError(err);
       });
     } else {
       this.common.errorSync('请完整填写信息');

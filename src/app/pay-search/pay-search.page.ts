@@ -14,8 +14,8 @@ import { DatePipe } from '@angular/common';
 export class PaySearchPage implements OnInit {
 
   model = {
-    start_time: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-    end_time: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+    start_time: '',
+    end_time: '',
     keyword: '',
   };
 

@@ -13,9 +13,9 @@
 
     <ion-list>
       <ion-item lines="none">
-        <p>
-          不足之处，欢迎你给我们提建议或意见，我们虚怀若谷，我们一起成长，也欢迎你向他人宣传我们。
-        </p>
+        <ion-label text-wrap>
+            不足之处，欢迎你给我们提建议或意见，我们虚怀若谷，我们一起成长，也欢迎你向他人宣传我们。
+        </ion-label>
       </ion-item>
       <ion-item lines="none">
         <h3>联系我们</h3>
@@ -30,7 +30,8 @@
         <h3>留言：</h3>
       </ion-item>
       <ion-item>
-        <ion-textarea name="textarea" rows="4" cols="20" [(ngModel)]="model.textarea" placeholder="投诉、建议、咨询、合作等" required></ion-textarea>
+        <ion-textarea name="textarea" rows="4" cols="20" [(ngModel)]="model.textarea" placeholder="投诉、建议、咨询、合作等"
+          required></ion-textarea>
       </ion-item>
     </ion-list>
 

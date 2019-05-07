@@ -19,20 +19,22 @@
 
   <form #form="ngForm">
     <ion-item>
-      <ion-label>箱&nbsp;&nbsp;&nbsp;号</ion-label>
+      <ion-label>箱&nbsp;&nbsp;&nbsp;号:</ion-label>
       <ion-input name="ctnNo" [(ngModel)]="model.ctnNo" type="text" placeholder="请输入箱号" required>
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>提单号</ion-label>
-      <ion-input name="ladingBillNumber" [(ngModel)]="model.ladingBillNumber" type="password" placeholder="请输入提单号"
+      <ion-label>提单号:</ion-label>
+      <ion-input name="ladingBillNumber" [(ngModel)]="model.ladingBillNumber" type="text" placeholder="请输入提单号"
         required>
       </ion-input>
     </ion-item>
-    <ion-item>
-      <ion-img *ngIf="!img" [src]="addImage" (click)="upload()"></ion-img>
-      <ion-img *ngIf="img" [src]="img"></ion-img>
-    </ion-item>
+    <div class="ion-padding">
+      <div class="imgDiv">
+          <ion-img *ngIf="!img" [src]="addImage" (click)="upload()"></ion-img>
+          <ion-img *ngIf="img" [src]="img"></ion-img>
+      </div>
+    </div>
     <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>
   </form>
 

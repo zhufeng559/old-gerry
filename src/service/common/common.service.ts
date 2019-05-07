@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController, LoadingController } from '@ionic/angular';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 
@@ -8,9 +8,12 @@ import { Router } from '@angular/router';
 })
 export class CommonService {
 
+  loader: HTMLIonLoadingElement;
+
   constructor(private toastCtrl: ToastController,
      private storage: StorageService,
-     public router: Router, ) { }
+     public router: Router,
+     public loading: LoadingController ) { }
 
   async errorSync(msg) {
     const toast = await this.toastCtrl.create({
@@ -28,6 +31,27 @@ export class CommonService {
       position: 'top',
     });
     await toast.present();
+  }
+
+  async requestError(err) {
+    await this.hideLoading();
+    await this.errorSync(`服务器请求失败:${err.message}`);
+  }
+
+  async showLoading(msg = '') {
+    this.loader = await this.loading.create({
+      spinner: 'crescent',
+      message: msg
+    });
+    await this.loader.present();
+  }
+
+  async hideLoading() {
+    if (this.loader) {
+      this.loader.dismiss().then(() => {
+        this.loader = null;
+      });
+    }
   }
 
   checkLogin() {

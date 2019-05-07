@@ -3,7 +3,7 @@ import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ActionSheetController } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -35,7 +35,8 @@ export class OrderPage implements OnInit {
     public router: Router,
     public activeRoute: ActivatedRoute,
     public alertCtrl: AlertController,
-    private storage: StorageService) {
+    private storage: StorageService,
+    private actionSheetCtrl: ActionSheetController) {
     }
 
   ngOnInit() {
@@ -63,31 +64,58 @@ export class OrderPage implements OnInit {
     this.type = '1';
   }
 
-  submit() {
+  async submit() {
+    if (this.model.file_id == '') {
+      this.common.errorSync('请上传图片');
+      return;
+    }
     if (this.form.valid) {
+      await this.common.showLoading();
       this.http.post('/request/create_order', this.model).subscribe(res => {
+        this.common.hideLoading();
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
           this.common.success();
+          this.model.ctnNo = '';
+          this.model.ladingBillNumber = '';
+          this.model.file_id = '';
+          this.img = '';
         } else {
           this.common.errorSync(`建单错误{${r.resultNode}}`);
         }
       }, err => {
-        this.common.errorSync(`建单错误{${err.message}}`);
+        this.common.requestError(err);
       });
     } else {
       this.common.errorSync('请完整填写信息');
     }
   }
 
-  upload() {
-    document.getElementById('imageUpload1').click();
+  async upload() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: '请选择',
+      buttons: [{
+          icon: 'camera',
+          text: '打开相机',
+          handler: () => {
+          }
+        }, {
+          icon: 'image',
+          text: '打开相册',
+          handler: () => {
+            document.getElementById('imageUpload1').click();
+          }
+        }
+      ]
+    });
+    await actionSheet.present();
   }
 
-  imageUpload(element: any) {
+  async imageUpload(element: any) {
     if (element.files == null || element.files.length < 1) {
       return;
     }
+    await this.common.showLoading();
     const fd = new FormData();
     for (let i = 0, len = element.files.length; i < len; i++) {
       const file = element.files[i];
@@ -95,6 +123,7 @@ export class OrderPage implements OnInit {
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', (evt: any, ) => {
           const result = JSON.parse(evt.target.responseText);
+          this.common.hideLoading();
           if (result.code >= 0) {
             this.common.success('上传成功').then(() => {
               this.model.file_id = '1557039249064';

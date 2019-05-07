@@ -47,9 +47,11 @@ export class OrderHistoryPage implements OnInit {
     });
   }
 
-  load() {
+  async load() {
     this.list = new Array();
+    await this.common.showLoading();
     return this.http.post('/request/get_order_list' , this.condition).toPromise().then(res => {
+      this.common.hideLoading();
       const r = res as any;
       if (r.code >= -1) {
         this.total = r.recordsTotal;
@@ -67,7 +69,7 @@ export class OrderHistoryPage implements OnInit {
         this.common.errorSync(`查询错误{${r.resultNode}}`);
       }
     }, err => {
-      this.common.errorSync(`查询错误{${err.message}}`);
+      this.common.requestError(err);
     });
   }
 

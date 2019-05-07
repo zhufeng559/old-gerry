@@ -6,23 +6,36 @@
 
 <ion-content>
 
-  <ion-item detail (click)="gotoMyMessage()">
-    <ion-label>我的消息</ion-label>
-  </ion-item>
-  <ion-item detail (click)="gotoChangePassword()">
-    <ion-label>修改密码</ion-label>
-  </ion-item>
-  <ion-item detail (click)="gotoPersonInfo()">
-    <ion-label>完善个人信息</ion-label>
-  </ion-item>
-  <ion-item detail (click)="gotoFeedBack()">
-    <ion-label>意见反馈</ion-label>
-  </ion-item>
-  <ion-item detail (click)="gotoCheckVersion()">
-    <ion-label>检查更新</ion-label>
-  </ion-item>
+  <div style="height: 180px;background: #7a9ad7;">
+    <div style="padding-top: 40px;">
+      <ion-avatar style="margin:0 auto !important;">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <p style="text-align: center;color: white;">18706127700</p>
+    </div>
+  </div>
 
-  <ion-button color="primary" expand="block" class="ion-margin-top" (click)="logout()">退出系统
-  </ion-button>
+  <ion-list>
+    <ion-item detail (click)="gotoMyMessage()">
+      <ion-label>我的消息</ion-label>
+    </ion-item>
+    <ion-item detail (click)="gotoChangePassword()">
+      <ion-label>修改密码</ion-label>
+    </ion-item>
+    <ion-item detail (click)="gotoPersonInfo()">
+      <ion-label>完善个人信息</ion-label>
+    </ion-item>
+    <ion-item detail (click)="gotoFeedBack()">
+      <ion-label>意见反馈</ion-label>
+    </ion-item>
+    <ion-item detail (click)="gotoCheckVersion()">
+      <ion-label>检查更新</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding">
+    <ion-button class="ion-margin" color="primary" expand="block" class="ion-margin-top" (click)="logout()">退出系统
+    </ion-button>
+  </div>
 
 </ion-content>

@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
+import { ActionSheetController } from '@ionic/angular';
+import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 
 @Component({
   selector: 'app-order-detail',
@@ -27,7 +29,8 @@ export class OrderDetailPage implements OnInit {
     id: 0,
     ladingbillnumber: '',
     state: 0,
-    reason: ''
+    reason: '',
+    reasonstate: 0
   };
   addImage = '../../assets/image/addImage.jpg';
   stateDesc = '';
@@ -38,7 +41,8 @@ export class OrderDetailPage implements OnInit {
   constructor(private http: HttpService,
     private common: CommonService,
     public router: Router,
-    public activeRoute: ActivatedRoute, ) {
+    public activeRoute: ActivatedRoute,
+    private actionSheetCtrl: ActionSheetController) {
   }
 
   ngOnInit() {
@@ -58,6 +62,17 @@ export class OrderDetailPage implements OnInit {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.model = r.rows;
+        if (this.model.reasonstate == 1) {
+          this.stateDesc = '已退回';
+          this.model.file_id = '';
+          this.model.file_url = '';
+        } else {
+          if (this.model.state == 0) {
+            this.stateDesc = '未通过';
+          } else{
+            this.stateDesc = '已通过';
+          }
+        }
       } else {
         this.common.errorSync(`获取订单详情失败{${r.resultNode}}`);
       }
@@ -67,6 +82,10 @@ export class OrderDetailPage implements OnInit {
   }
 
   submit() {
+    if (this.model.file_id == '') {
+      this.common.errorSync('请上传图片');
+      return;
+    }
     if (this.form.valid) {
       this.http.post('/request/create_order', this.model).subscribe(res => {
         const r = res as any;
@@ -83,8 +102,26 @@ export class OrderDetailPage implements OnInit {
     }
   }
 
-  upload() {
-    document.getElementById('imageUpload1').click();
+  async upload() {
+    if (this.model.reasonstate == 1) {
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: '请选择',
+        buttons: [{
+            icon: 'camera',
+            text: '打开相机',
+            handler: () => {
+            }
+          }, {
+            icon: 'image',
+            text: '打开相册',
+            handler: () => {
+              document.getElementById('imageUpload1').click();
+            }
+          }
+        ]
+      });
+      await actionSheet.present();
+    }
   }
 
   imageUpload(element: any) {

@@ -46,8 +46,10 @@ export class PayListPage implements OnInit {
     });
   }
 
-  load() {
+  async load() {
+    this.common.showLoading();
     return this.http.post('/request/get_bill_list' , this.condition).toPromise().then(res => {
+      this.common.hideLoading();
       const r = res as any;
       if (r.code >= -1) {
         this.total = r.recordsTotal;
@@ -65,7 +67,7 @@ export class PayListPage implements OnInit {
         this.common.errorSync(`查询错误{${r.resultNode}}`);
       }
     }, err => {
-      this.common.errorSync(`查询错误{${err.message}}`);
+      this.common.requestError(err);
     });
   }
 

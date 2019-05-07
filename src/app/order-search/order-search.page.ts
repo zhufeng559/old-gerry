@@ -14,7 +14,7 @@ import { DatePipe } from '@angular/common';
 export class OrderSearchPage implements OnInit {
 
   model = {
-    create_time: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+    create_time: '',
     keyword: '',
     state: 0
   };
