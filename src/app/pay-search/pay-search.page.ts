@@ -14,8 +14,8 @@ import { DatePipe } from '@angular/common';
 export class PaySearchPage implements OnInit {
 
   model = {
-    start_time: '',
-    end_time: '',
+    start_date: '',
+    end_date: '',
     keyword: '',
   };
 
@@ -33,8 +33,8 @@ export class PaySearchPage implements OnInit {
     this.router.navigate(['/pay-list'], {
       queryParams: {
         keyword: this.model.keyword,
-        start_time: this.datePipe.transform(this.model.start_time, 'yyyy-MM-dd'),
-        end_time: this.datePipe.transform(this.model.start_time, 'yyyy-MM-dd'),
+        start_time: this.datePipe.transform(this.model.start_date, 'yyyy-MM-dd'),
+        end_time: this.datePipe.transform(this.model.end_date, 'yyyy-MM-dd'),
       }
     });
   }

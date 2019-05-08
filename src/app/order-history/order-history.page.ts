@@ -16,8 +16,8 @@ export class OrderHistoryPage implements OnInit {
   condition = {
     token : '',
     create_time: '',
-    ctnNo: '',
-    ladingBillNumber: '',
+    keyword: '',
+    creator: '',
     state: 0,
     pages: 1,
     size: 10
@@ -35,6 +35,7 @@ export class OrderHistoryPage implements OnInit {
     const user = this.common.checkLogin();
     if (user) {
       this.condition.token = user.token;
+      this.condition.creator = user.rows.userId;
     }
   }
 
@@ -42,7 +43,7 @@ export class OrderHistoryPage implements OnInit {
     this.activeRoute.queryParams.subscribe((params: Params) => {
       this.condition.create_time = params['create_time'] || '' ;
       this.condition.state = params['state'] || '';
-      this.condition.ctnNo = params['keyword'] || '';
+      this.condition.keyword = params['keyword'] || '';
       this.load();
     });
   }
@@ -53,7 +54,7 @@ export class OrderHistoryPage implements OnInit {
     return this.http.post('/request/get_order_list' , this.condition).toPromise().then(res => {
       this.common.hideLoading();
       const r = res as any;
-      if (r.code >= -1) {
+      if (this.common.isSuccess(r.code)) {
         this.total = r.recordsTotal;
         if (this.condition.pages === 1) {
           this.list = r.rows.list;

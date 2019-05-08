@@ -15,8 +15,9 @@ export class PayListPage implements OnInit {
   list = new Array();
   condition = {
     token : '',
-    start_time: '',
-    end_time: '',
+    creator : '',
+    start_date: '',
+    end_date: '',
     keyword: '',
     pages: 1,
     size: 10
@@ -34,13 +35,14 @@ export class PayListPage implements OnInit {
     const user = this.common.checkLogin();
     if (user) {
       this.condition.token = user.token;
+      this.condition.creator = user.rows.userId;
     }
   }
 
   ionViewWillEnter() {
     this.activeRoute.queryParams.subscribe((params: Params) => {
-      this.condition.start_time = params['start_time'] || '' ;
-      this.condition.end_time = params['end_time'] || '';
+      this.condition.start_date = params['start_date'] || '' ;
+      this.condition.end_date = params['end_date'] || '';
       this.condition.keyword = params['keyword'] || '';
       this.load();
     });
@@ -48,13 +50,15 @@ export class PayListPage implements OnInit {
 
   async load() {
     this.common.showLoading();
+    debugger;
     return this.http.post('/request/get_bill_list' , this.condition).toPromise().then(res => {
+      debugger;
       this.common.hideLoading();
       const r = res as any;
       if (r.code >= -1) {
-        this.total = r.recordsTotal;
+        this.total = r.rows.total;
         if (this.condition.pages === 1) {
-          this.list = r.rows.list;
+          this.list = r.rows.list || [];
         } else if (r.rows.list) {
           this.list = this.list.concat(r.rows.list);
         }

@@ -20,8 +20,6 @@ export class OrderPage implements OnInit {
     creator: '',
     ladingBillNumber: '',
     ctnNo: '',
-    create_time: '',
-    id: 0,
     file_id: '',
     token: ''
   };
@@ -43,6 +41,7 @@ export class OrderPage implements OnInit {
     const user = this.common.checkLogin();
     if (user) {
       this.model.token = user.token;
+      this.model.creator = user.rows.userId;
     }
   }
 
@@ -80,6 +79,7 @@ export class OrderPage implements OnInit {
           this.model.ladingBillNumber = '';
           this.model.file_id = '';
           this.img = '';
+          this.form.reset();
         } else {
           this.common.errorSync(`建单错误{${r.resultNode}}`);
         }
@@ -126,7 +126,7 @@ export class OrderPage implements OnInit {
           this.common.hideLoading();
           if (result.code >= 0) {
             this.common.success('上传成功').then(() => {
-              this.model.file_id = '1557039249064';
+              this.model.file_id = result.rows.file_id;
               this.addImage = result.rows.file_url;
             });
           } else {
