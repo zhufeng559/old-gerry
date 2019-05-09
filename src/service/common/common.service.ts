@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class CommonService {
 
   loader: HTMLIonLoadingElement;
+  public isLoading = false;
 
   constructor(private toastCtrl: ToastController,
      private storage: StorageService,
@@ -39,6 +40,7 @@ export class CommonService {
   }
 
   async showLoading(msg = '') {
+    this.isLoading = true;
     this.loader = await this.loading.create({
       spinner: 'crescent',
       message: msg
@@ -47,6 +49,7 @@ export class CommonService {
   }
 
   async hideLoading() {
+    this.isLoading = false;
     if (this.loader) {
       this.loader.dismiss().then(() => {
         this.loader = null;
@@ -65,5 +68,16 @@ export class CommonService {
 
   isSuccess(res) {
     return res >= 0;
+  }
+
+  getStatusDesc(status) {
+    switch (status) {
+      case '0':
+        return '已退回';
+      case '1':
+        return '已发送';
+      case '2':
+        return '未审核';
+    }
   }
 }

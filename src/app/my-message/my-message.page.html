@@ -7,6 +7,43 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="上拉刷新" refreshingSpinner="circles"
+      refreshingText="加载中...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+
+    <ion-card *ngFor="let item of list" (click)="gotoOrderDetail(item.id)">
+
+      <ion-item>
+        <ion-label [ngClass]="{'red': item.read_state==0}">
+          <ion-icon slot="start" style="vertical-align: middle;" *ngIf="item.read_state==0" color="primary" name="mail">
+          </ion-icon>
+          <ion-icon slot="start" style="vertical-align: middle;" *ngIf="item.read_state==1" color="primary" name="mail-open">
+          </ion-icon>
+          {{getReadDesc(item)}}
+        </ion-label>
+        <ion-note slot="end">
+          {{item.create_time}}
+        </ion-note>
+      </ion-item>
+
+      <ion-card-content>
+        <h5 style="word-break:break-all;">
+          {{getContent(item)}}
+        </h5>
+      </ion-card-content>
+
+    </ion-card>
+
+    <ion-img class="ion-margin-top" src="../../assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
+    </ion-img>
+    <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无消息</p>
+
+  </ion-list>
 
 </ion-content>

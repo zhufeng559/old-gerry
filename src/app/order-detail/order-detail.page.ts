@@ -5,8 +5,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
-import { ActionSheetController } from '@ionic/angular';
-import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
+import { ActionSheetController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-order-detail',
@@ -30,7 +29,7 @@ export class OrderDetailPage implements OnInit {
     ladingbillnumber: '',
     state: 0,
     reason: '',
-    reasonstate: 0
+    quit_state: -1
   };
   addImage = '../../assets/image/addImage.jpg';
   stateDesc = '';
@@ -42,7 +41,8 @@ export class OrderDetailPage implements OnInit {
     private common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    private actionSheetCtrl: ActionSheetController) {
+    private actionSheetCtrl: ActionSheetController,
+    public nav: NavController) {
   }
 
   ngOnInit() {
@@ -62,16 +62,14 @@ export class OrderDetailPage implements OnInit {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.model = r.rows;
-        if (this.model.reasonstate == 1) {
+        if (this.model.quit_state == 0) {
           this.stateDesc = '已退回';
           this.model.file_id = '';
           this.model.file_url = '';
-        } else {
-          if (this.model.state == 0) {
-            this.stateDesc = '未通过';
-          } else{
-            this.stateDesc = '已通过';
-          }
+        } else if (this.model.quit_state == 1) {
+            this.stateDesc = '已发送';
+        } else if (this.model.quit_state == 2) {
+            this.stateDesc = '未审核';
         }
       } else {
         this.common.errorSync(`获取订单详情失败{${r.resultNode}}`);
@@ -87,10 +85,18 @@ export class OrderDetailPage implements OnInit {
       return;
     }
     if (this.form.valid) {
-      this.http.post('/request/create_order', this.model).subscribe(res => {
+      const model = {
+        creator: this.user.rows.userId,
+        ladingBillNumber: this.model.ladingbillnumber,
+        ctnNo: this.model.ctnno,
+        file_id: this.model.file_id,
+        token: this.user.token
+      };
+      this.http.post('/request/create_order', model).subscribe(res => {
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
           this.common.success();
+          this.nav.pop();
         } else {
           this.common.errorSync(`重新提交订单错误{${r.resultNode}}`);
         }
@@ -103,7 +109,7 @@ export class OrderDetailPage implements OnInit {
   }
 
   async upload() {
-    if (this.model.reasonstate == 1) {
+    if (this.model.quit_state == 0) {
       const actionSheet = await this.actionSheetCtrl.create({
         header: '请选择',
         buttons: [{
@@ -137,7 +143,7 @@ export class OrderDetailPage implements OnInit {
           const result = JSON.parse(evt.target.responseText);
           if (result.code >= 0) {
             this.common.success('上传成功').then(() => {
-              this.model.file_id = '1557039249064';
+              this.model.file_id = result.rows.file_id;
               this.addImage = result.rows.file_url;
             });
           } else {

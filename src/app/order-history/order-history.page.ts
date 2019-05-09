@@ -16,6 +16,8 @@ export class OrderHistoryPage implements OnInit {
   condition = {
     token : '',
     create_time: '',
+    quit_state: -1,
+    reason: '',
     keyword: '',
     creator: '',
     state: 0,
@@ -26,7 +28,7 @@ export class OrderHistoryPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   constructor(private http: HttpService,
-    private common: CommonService,
+    public common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute, ) {
     }

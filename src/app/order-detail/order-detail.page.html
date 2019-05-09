@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>提单号{{model.ladingbillnumber}}</ion-title>
+    <ion-title>{{model.ladingbillnumber}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -39,14 +39,14 @@
     </ion-item>
     <div class="ion-padding">
       <div class="imgDiv">
-        <ion-img *ngIf="!model.file_url" [src]="addImage" (click)="upload()"></ion-img>
-        <ion-img *ngIf="model.file_url" [src]="model.file_url"></ion-img>
+        <ion-img *ngIf="model.quit_state==0" [src]="addImage" (click)="upload()"></ion-img>
+        <ion-img *ngIf="model.quit_state!=0" [src]="model.file_url"></ion-img>
       </div>
     </div>
     <input id="imageUpload1" #imageUpload1 type="file" accept="image/*" style="display: none"
       (change)="imageUpload(imageUpload1)" />
 
-    <ion-button *ngIf="model.reasonstate==1" color="primary" expand="block" class="ion-margin-top" (click)="submit()">重新提交</ion-button>
+    <ion-button *ngIf="model.quit_state==0" color="primary" expand="block" class="ion-margin-top" (click)="submit()">重新提交</ion-button>
   </form>
 
 </ion-content>

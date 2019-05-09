@@ -26,7 +26,7 @@ export class PayListPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   constructor(private http: HttpService,
-    private common: CommonService,
+    public common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute, ) {
     }
@@ -50,12 +50,10 @@ export class PayListPage implements OnInit {
 
   async load() {
     this.common.showLoading();
-    debugger;
     return this.http.post('/request/get_bill_list' , this.condition).toPromise().then(res => {
-      debugger;
       this.common.hideLoading();
       const r = res as any;
-      if (r.code >= -1) {
+      if (this.common.isSuccess(r.code)) {
         this.total = r.rows.total;
         if (this.condition.pages === 1) {
           this.list = r.rows.list || [];

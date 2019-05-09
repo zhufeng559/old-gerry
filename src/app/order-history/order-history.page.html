@@ -24,15 +24,21 @@
     <ion-item *ngFor="let item of list" lines="none" detail (click)="gotoOrderDetail(item?.id)">
       <ion-thumbnail slot="start">
         <img *ngIf="item?.pack_pic" [src]="item?.pack_pic">
+        <img *ngIf="!item?.pack_pic" src="../../assets/image/noImage.jpg">
       </ion-thumbnail>
       <ion-label>
-        <h4>箱&nbsp;&nbsp;&nbsp;号:{{item?.ctnno}}</h4>
-        <h4>提单号:{{item?.ladingbillnumber}}<span style="float: right;color: #3880ff">{{getStatus(item)}}</span></h4>
+        <h4>箱&nbsp;&nbsp;&nbsp;号:{{item?.ctnno}} <span style="float: right;color: #3880ff">{{getStatus(item)}}</span>
+        </h4>
+        <h4>提单号:{{item?.ladingbillnumber}}</h4>
         <p>时&nbsp;&nbsp;&nbsp;间:{{item?.create_time | date:'yyyy-MM-dd HH:mm:ss'}}</p>
       </ion-label>
     </ion-item>
 
   </ion-list>
+
+  <ion-img class="ion-margin-top" src="../../assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
+  </ion-img>
+  <p *ngIf="list.length==0&&!common.isLoading"> class="ion-text-center">暂无数据</p>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多数据...">
