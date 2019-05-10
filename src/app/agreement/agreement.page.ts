@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { StorageService } from '../../service/common/storage.service';
 
 @Component({
   selector: 'app-agreement',
@@ -9,16 +10,14 @@ import { Router } from '@angular/router';
 })
 export class AgreementPage implements OnInit {
 
-  constructor(public router: Router, ) { }
+  constructor(public router: Router,
+    public storage: StorageService ) { }
 
   ngOnInit() {
   }
 
   submit () {
-    this.router.navigate(['/register'], {
-      queryParams: {
-        agree: true
-      }
-    });
+    this.storage.write('agree', 1);
+    this.router.navigate(['/register']);
   }
 }

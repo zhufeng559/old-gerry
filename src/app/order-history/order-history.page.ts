@@ -4,6 +4,7 @@ import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
+import { StorageService } from '../../service/common/storage.service';
 
 @Component({
   selector: 'app-order-history',
@@ -30,7 +31,8 @@ export class OrderHistoryPage implements OnInit {
   constructor(private http: HttpService,
     public common: CommonService,
     public router: Router,
-    public activeRoute: ActivatedRoute, ) {
+    public activeRoute: ActivatedRoute,
+    public storage: StorageService ) {
     }
 
   ngOnInit() {
@@ -41,13 +43,26 @@ export class OrderHistoryPage implements OnInit {
     }
   }
 
-  ionViewWillEnter() {
-    this.activeRoute.queryParams.subscribe((params: Params) => {
-      this.condition.create_time = params['create_time'] || '' ;
-      this.condition.state = params['state'] || '';
-      this.condition.keyword = params['keyword'] || '';
-      this.load();
-    });
+  ionViewDidEnter () {
+    console.log('OrderHistoryPage');
+    const params = this.storage.read<{
+      create_time: string,
+      keyword: string,
+      state: number
+    }>('order_search');
+    if (params) {
+      this.condition.create_time = params.create_time || '' ;
+      this.condition.state = params.state || 0;
+      this.condition.keyword = params.keyword || '';
+    }
+    this.load();
+  }
+
+  ionViewDidLeave() {
+    this.condition.create_time = '' ;
+    this.condition.state = 0;
+    this.condition.keyword = '';
+    this.storage.remove('order_search');
   }
 
   async load() {
@@ -109,10 +124,14 @@ export class OrderHistoryPage implements OnInit {
   }
 
   gotoOrderDetail(id) {
-    this.router.navigate(['/order-detail'],{
+    this.router.navigate(['/order-detail'], {
       queryParams: {
         id: id
       }
     });
+  }
+
+  back() {
+    this.router.navigate(['/tabs/order']);
   }
 }

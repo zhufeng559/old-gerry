@@ -37,9 +37,12 @@ export class FeedbackPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter () {
     this.user = this.common.checkLogin();
-    this.model.userId = this.user.userId;
-    this.model.phone = this.user.phone;
+    this.model.userId = this.user.rows.userId;
+    this.model.phone = this.user.rows.phone;
     this.model.token = this.user.token;
   }
 
@@ -50,14 +53,19 @@ export class FeedbackPage implements OnInit {
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
           this.common.success();
+          this.router.navigate(['/tabs/my']);
         } else {
           this.common.errorSync(`提交建议错误{${r.resultNode}}`);
         }
       }, err => {
-        this.common.errorSync(`提交建议错误{${err.message}}`);
+        this.common.requestError(err);
       });
     } else {
       this.common.errorSync('请完整填写信息');
     }
+  }
+
+  back() {
+    this.router.navigate(['/tabs/my']);
   }
 }

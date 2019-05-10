@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="back()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>历史</ion-title>
     <ion-chip color="light" slot="end" (click)="gotoOrderSearch()">
@@ -38,7 +40,7 @@
 
   <ion-img class="ion-margin-top" src="../../assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
   </ion-img>
-  <p *ngIf="list.length==0&&!common.isLoading"> class="ion-text-center">暂无数据</p>
+  <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无数据</p>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多数据...">

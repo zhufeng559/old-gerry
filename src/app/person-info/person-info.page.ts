@@ -63,7 +63,7 @@ export class PersonInfoPage implements OnInit {
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
           this.common.success();
-          this.form.reset();
+          this.router.navigate(['/tabs/my']);
         } else {
           this.common.errorSync(`保存用户信息错误{${r.resultNode}}`);
         }
@@ -75,4 +75,7 @@ export class PersonInfoPage implements OnInit {
     }
   }
 
+  back() {
+    this.router.navigate(['/tabs/my']);
+  }
 }

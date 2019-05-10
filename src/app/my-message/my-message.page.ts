@@ -27,14 +27,14 @@ export class MyMessagePage implements OnInit {
     }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter () {
     const user = this.common.checkLogin();
     if (user) {
       this.condition.token = user.token;
       this.condition.creator = user.rows.userId;
     }
-  }
-
-  ionViewWillEnter() {
     this.load();
   }
 
@@ -44,7 +44,7 @@ export class MyMessagePage implements OnInit {
       this.common.hideLoading();
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
-        this.list = r.rows;
+        this.list = r.rows || [];
       } else {
         this.common.errorSync(`查询错误{${r.resultNode}}`);
       }
@@ -86,7 +86,7 @@ export class MyMessagePage implements OnInit {
       this.common.hideLoading();
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
-        this.router.navigate(['/order-detail'],{
+        this.router.navigate(['/order-detail'], {
           queryParams: {
             id: id
           }
@@ -97,5 +97,9 @@ export class MyMessagePage implements OnInit {
     }, err => {
       this.common.requestError(err);
     });
+  }
+
+  back() {
+    this.router.navigate(['/tabs/my']);
   }
 }

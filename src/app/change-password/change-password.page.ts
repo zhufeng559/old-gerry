@@ -34,7 +34,7 @@ export class ChangePasswordPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter () {
     this.activeRoute.queryParams.subscribe((params: Params) => {
       this.model.phone = params['phone'] ;
     });

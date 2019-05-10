@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="back()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>意见反馈</ion-title>
   </ion-toolbar>
@@ -14,7 +16,7 @@
     <ion-list>
       <ion-item lines="none">
         <ion-label text-wrap>
-            不足之处，欢迎你给我们提建议或意见，我们虚怀若谷，我们一起成长，也欢迎你向他人宣传我们。
+          不足之处，欢迎你给我们提建议或意见，我们虚怀若谷，我们一起成长，也欢迎你向他人宣传我们。
         </ion-label>
       </ion-item>
       <ion-item lines="none">

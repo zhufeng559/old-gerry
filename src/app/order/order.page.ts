@@ -21,10 +21,10 @@ export class OrderPage implements OnInit {
     ladingBillNumber: '',
     ctnNo: '',
     file_id: '',
+    file_url: '',
     token: ''
   };
   addImage = '../../assets/image/addImage.jpg';
-  img = '';
   UPLOAD_URL = environment.UPLOAD_URL;
   @ViewChild('form') form: NgForm;
 
@@ -38,11 +38,6 @@ export class OrderPage implements OnInit {
     }
 
   ngOnInit() {
-    const user = this.common.checkLogin();
-    if (user) {
-      this.model.token = user.token;
-      this.model.creator = user.rows.userId;
-    }
   }
 
   segmentChanged(ev: any) {
@@ -59,8 +54,23 @@ export class OrderPage implements OnInit {
     }
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter () {
+    console.log('OrderPage');
     this.type = '1';
+    this.model.file_url = this.storage.read('order_image');
+    if (!this.model.file_url) {
+      this.model.file_id = '';
+    }
+    const user = this.common.checkLogin();
+    if (user) {
+      this.model.token = user.token;
+      this.model.creator = user.rows.userId;
+    }
+    this.model.ctnNo = '';
+    this.model.ladingBillNumber = '';
+    this.model.file_id = '';
+    this.model.file_url = '';
+    this.form.reset();
   }
 
   async submit() {
@@ -78,7 +88,8 @@ export class OrderPage implements OnInit {
           this.model.ctnNo = '';
           this.model.ladingBillNumber = '';
           this.model.file_id = '';
-          this.img = '';
+          this.model.file_url = '';
+          this.storage.write('order_image', '');
           this.form.reset();
         } else {
           this.common.errorSync(`建单错误{${r.resultNode}}`);
@@ -127,7 +138,7 @@ export class OrderPage implements OnInit {
           if (result.code >= 0) {
             this.common.success('上传成功').then(() => {
               this.model.file_id = result.rows.file_id;
-              this.addImage = result.rows.file_url;
+              this.model.file_url = result.rows.file_url;
             });
           } else {
             this.common.errorSync(`上传错误{${result.resultNode}}`);
@@ -136,5 +147,14 @@ export class OrderPage implements OnInit {
         xhr.open('post', this.UPLOAD_URL);
         xhr.send(fd);
     }
+  }
+
+  gotoImageDetail() {
+    this.storage.write('order_image', this.model.file_url);
+    this.router.navigate(['/image-detail'], {
+      queryParams: {
+        nodelete : 1
+      }
+    });
   }
 }

@@ -5,6 +5,7 @@ import { CommonService } from '../../service/common/common.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
+import { StorageService } from '../../service/common/storage.service';
 
 @Component({
   selector: 'app-register',
@@ -30,20 +31,24 @@ export class RegisterPage implements OnInit {
   constructor(private http: HttpService,
     private common: CommonService,
     public router: Router,
-    public activeRoute: ActivatedRoute, ) {
+    public activeRoute: ActivatedRoute,
+    public storage: StorageService ) {
     }
 
   ngOnInit() {
-
   }
 
-  ionViewWillEnter() {
-    this.activeRoute.queryParams.subscribe((params: Params) => {
-      this.agree = params['agree'] == 'true';
-    });
+  ionViewDidEnter () {
+    const agree = this.storage.read('agree');
+    if (agree == 1) {
+      this.agree = true;
+    }
   }
 
   async submit() {
+    if (!this.agree) {
+      this.common.errorSync(`需同意注册协议才可注册`);
+    }
     if (this.form.valid) {
       await this.common.showLoading();
       this.http.post('/request/register', this.model).subscribe(res => {

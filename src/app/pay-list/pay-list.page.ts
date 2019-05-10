@@ -4,6 +4,7 @@ import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
+import { StorageService } from '../../service/common/storage.service';
 
 @Component({
   selector: 'app-pay-list',
@@ -20,7 +21,7 @@ export class PayListPage implements OnInit {
     end_date: '',
     keyword: '',
     pages: 1,
-    size: 10
+    size: 10,
   };
   total: number;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
@@ -28,7 +29,8 @@ export class PayListPage implements OnInit {
   constructor(private http: HttpService,
     public common: CommonService,
     public router: Router,
-    public activeRoute: ActivatedRoute, ) {
+    public activeRoute: ActivatedRoute,
+    public storage: StorageService ) {
     }
 
   ngOnInit() {
@@ -39,13 +41,26 @@ export class PayListPage implements OnInit {
     }
   }
 
-  ionViewWillEnter() {
-    this.activeRoute.queryParams.subscribe((params: Params) => {
-      this.condition.start_date = params['start_date'] || '' ;
-      this.condition.end_date = params['end_date'] || '';
-      this.condition.keyword = params['keyword'] || '';
-      this.load();
-    });
+  ionViewDidEnter () {
+    console.log('PayListPage');
+    const params = this.storage.read<{
+      start_date: string,
+      end_date: string,
+      keyword: string
+    }>('pay_search');
+    if (params) {
+      this.condition.start_date = params.start_date || '' ;
+      this.condition.end_date = params.end_date || '';
+      this.condition.keyword = params.keyword || '';
+    }
+    this.load();
+  }
+
+  ionViewDidLeave() {
+    this.condition.start_date = '' ;
+    this.condition.end_date = '';
+    this.condition.keyword = '';
+    this.storage.remove('pay_search');
   }
 
   async load() {
@@ -54,7 +69,7 @@ export class PayListPage implements OnInit {
       this.common.hideLoading();
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
-        this.total = r.rows.total;
+        this.total = r.draw || 0;
         if (this.condition.pages === 1) {
           this.list = r.rows.list || [];
         } else if (r.rows.list) {
@@ -96,4 +111,7 @@ export class PayListPage implements OnInit {
     this.router.navigate(['/pay-search']);
   }
 
+  back() {
+    this.router.navigate(['/tabs/order']);
+  }
 }

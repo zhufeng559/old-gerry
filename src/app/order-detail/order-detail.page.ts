@@ -6,6 +6,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { ActionSheetController, NavController } from '@ionic/angular';
+import { StorageService } from '../../service/common/storage.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -42,7 +43,8 @@ export class OrderDetailPage implements OnInit {
     public router: Router,
     public activeRoute: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,
-    public nav: NavController) {
+    public nav: NavController,
+    public storage: StorageService) {
   }
 
   ngOnInit() {
@@ -50,7 +52,7 @@ export class OrderDetailPage implements OnInit {
     this.condition.token = this.user.token;
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter () {
     this.activeRoute.queryParams.subscribe((params: Params) => {
       this.condition.id = params['id'] || '' ;
       this.load();
@@ -153,5 +155,18 @@ export class OrderDetailPage implements OnInit {
         xhr.open('post', this.UPLOAD_URL);
         xhr.send(fd);
     }
+  }
+
+  gotoImageDetail() {
+    this.storage.write('order_image', this.model.file_url);
+    let nodelete = 0;
+    if (this.model.quit_state == 0) {
+      nodelete = 1;
+    }
+    this.router.navigate(['/image-detail'], {
+      queryParams: {
+        nodelete : nodelete
+      }
+    });
   }
 }

@@ -41,6 +41,10 @@ export class MyPage implements OnInit {
     }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter () {
+    console.log('MyPage');
     this.user = this.common.checkLogin();
     this.http.post('/request/user_detail', {
       userId: this.user.rows.userId,

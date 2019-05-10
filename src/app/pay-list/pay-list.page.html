@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="back()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>账单</ion-title>
     <ion-chip color="light" slot="end" (click)="gotoPaySearch()">
@@ -32,9 +34,9 @@
       </ion-label>
     </ion-item>
 
-    <ion-img class="ion-margin-top" src="../../assets/image/noData.png"  *ngIf="list.length==0&&!common.isLoading">
+    <ion-img class="ion-margin-top" src="../../assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
     </ion-img>
-    <p  *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无数据</p>
+    <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无数据</p>
 
   </ion-list>
 

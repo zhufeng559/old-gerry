@@ -4,6 +4,7 @@ import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { StorageService } from '../../service/common/storage.service';
 
 @Component({
   selector: 'app-order-search',
@@ -25,10 +26,23 @@ export class OrderSearchPage implements OnInit {
     private common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    public datePipe: DatePipe, ) {
+    public datePipe: DatePipe,
+    public storage: StorageService ) {
     }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter () {
+    console.log('OrderSearchPage');
+    const params = this.storage.read<{
+      create_time: string,
+      keyword: string,
+      state: number
+    }>('order_search');
+    if (params) {
+      this.model = params;
+    }
   }
 
   submit() {
@@ -44,12 +58,12 @@ export class OrderSearchPage implements OnInit {
       }
     }
 
-    this.router.navigate(['/order-history'], {
-      queryParams: {
-        state: state,
-        keyword: this.model.keyword,
-        create_time: this.datePipe.transform(this.model.create_time, 'yyyy-MM-dd'),
-      }
+    this.storage.write('order_search', {
+      state: state,
+      keyword: this.model.keyword,
+      create_time: this.datePipe.transform(this.model.create_time, 'yyyy-MM-dd'),
     });
+
+    this.router.navigate(['/order-history']);
   }
 }

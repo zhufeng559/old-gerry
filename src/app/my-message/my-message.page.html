@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="back()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>我的消息</ion-title>
   </ion-toolbar>
@@ -23,7 +25,8 @@
         <ion-label [ngClass]="{'red': item.read_state==0}">
           <ion-icon slot="start" style="vertical-align: middle;" *ngIf="item.read_state==0" color="primary" name="mail">
           </ion-icon>
-          <ion-icon slot="start" style="vertical-align: middle;" *ngIf="item.read_state==1" color="primary" name="mail-open">
+          <ion-icon slot="start" style="vertical-align: middle;" *ngIf="item.read_state==1" color="primary"
+            name="mail-open">
           </ion-icon>
           {{getReadDesc(item)}}
         </ion-label>
