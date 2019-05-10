@@ -43,7 +43,7 @@ export class CommonService {
     this.isLoading = true;
     this.loader = await this.loading.create({
       spinner: 'crescent',
-      message: msg
+      message: msg,
     });
     await this.loader.present();
   }

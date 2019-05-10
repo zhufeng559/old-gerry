@@ -30,7 +30,7 @@ export class PayListPage implements OnInit {
     public common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    public storage: StorageService ) {
+    public storage: StorageService, ) {
     }
 
   ngOnInit() {

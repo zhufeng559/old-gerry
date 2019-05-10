@@ -3,7 +3,7 @@ import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AlertController, ActionSheetController } from '@ionic/angular';
+import { AlertController, ActionSheetController, Events } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -34,7 +34,11 @@ export class OrderPage implements OnInit {
     public activeRoute: ActivatedRoute,
     public alertCtrl: AlertController,
     private storage: StorageService,
-    private actionSheetCtrl: ActionSheetController) {
+    private actionSheetCtrl: ActionSheetController,
+    public events: Events) {
+      events.subscribe('new', (file) => {
+        this.type = '1';
+      });
     }
 
   ngOnInit() {

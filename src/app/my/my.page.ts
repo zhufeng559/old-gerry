@@ -140,13 +140,12 @@ export class MyPage implements OnInit {
           const result = JSON.parse(evt.target.responseText);
           this.common.hideLoading();
           if (result.code >= 0) {
-            this.common.success('上传成功').then(() => {
-              this.model.file_id = result.rows.file_id;
-              this.model.file_url = result.rows.file_url;
-              setTimeout(() => {
-                this.submit();
-              }, 100);
-            });
+            this.common.success('上传成功');
+            this.model.file_id = result.rows.file_id;
+            this.model.file_url = result.rows.file_url;
+            setTimeout(() => {
+              this.submit();
+            }, 300);
           } else {
             this.common.errorSync(`上传错误{${result.resultNode}}`);
           }
