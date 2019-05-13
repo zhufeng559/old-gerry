@@ -7,11 +7,16 @@ import { AlertController, ActionSheetController, Events } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.page.html',
   styleUrls: ['./order.page.scss'],
+  providers: [DatePipe]
 })
 export class OrderPage implements OnInit {
 
@@ -27,6 +32,13 @@ export class OrderPage implements OnInit {
   addImage = '../../assets/image/addImage.jpg';
   UPLOAD_URL = environment.UPLOAD_URL;
   @ViewChild('form') form: NgForm;
+  options: CameraOptions = {
+    destinationType: this.camera.DestinationType.FILE_URI,
+    sourceType: this.camera.PictureSourceType.CAMERA,
+    allowEdit: false,
+    mediaType: this.camera.MediaType.PICTURE,
+    saveToPhotoAlbum: false
+  };
 
   constructor(private http: HttpService,
     private common: CommonService,
@@ -35,11 +47,17 @@ export class OrderPage implements OnInit {
     public alertCtrl: AlertController,
     private storage: StorageService,
     private actionSheetCtrl: ActionSheetController,
-    public events: Events) {
+    public events: Events,
+    private camera: Camera,
+    private transfer: FileTransfer,
+    private sanitizer: DomSanitizer,
+    public datePipe: DatePipe, ) {
       events.subscribe('new', (file) => {
         this.type = '1';
       });
     }
+
+  fileTransfer: FileTransferObject = this.transfer.create();
 
   ngOnInit() {
   }
@@ -56,6 +74,35 @@ export class OrderPage implements OnInit {
         this.router.navigate(['/pay-list']);
         break;
     }
+  }
+
+  takePhoto() {
+    this.camera.getPicture(this.options).then((uri) => {
+      const fo: FileUploadOptions = {
+        fileKey: 'files',
+        fileName: `${this.datePipe.transform(new Date(), 'yyyyMMddhhmmss')}.jpg`,
+        headers: {}
+     };
+     this.common.showLoading().then(() => {
+      this.fileTransfer.upload(uri, this.UPLOAD_URL, fo)
+      .then((data) => {
+        this.common.hideLoading();
+        const result = JSON.parse(data.response);
+        if (this.common.isSuccess(result.code)) {
+          this.common.success('上传成功').then(() => {
+            this.model.file_id = result.rows.file_id;
+            this.model.file_url = result.rows.file_url;
+          });
+        } else {
+          this.common.errorSync(`上传错误{${result.resultNode}}`);
+        }
+      }, (err) => {
+        this.common.errorSync(`未拍摄照片${err.message}`);
+      });
+     }).catch(err => {
+      this.common.errorSync(`未拍摄照片${err.message}`);
+     });
+     });
   }
 
   ionViewDidEnter () {
@@ -113,6 +160,7 @@ export class OrderPage implements OnInit {
           icon: 'camera',
           text: '打开相机',
           handler: () => {
+            this.takePhoto();
           }
         }, {
           icon: 'image',
@@ -139,7 +187,7 @@ export class OrderPage implements OnInit {
         xhr.addEventListener('load', (evt: any, ) => {
           const result = JSON.parse(evt.target.responseText);
           this.common.hideLoading();
-          if (result.code >= 0) {
+          if (this.common.isSuccess(result.code)) {
             this.common.success('上传成功').then(() => {
               this.model.file_id = result.rows.file_id;
               this.model.file_url = result.rows.file_url;
@@ -160,5 +208,9 @@ export class OrderPage implements OnInit {
         nodelete : 1
       }
     });
+  }
+
+  setSafe(url) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageService } from '../../service/common/storage.service';
+import { Platform, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-welcome',
@@ -10,17 +11,17 @@ import { StorageService } from '../../service/common/storage.service';
 export class WelcomePage implements OnInit {
 
   slideOpts = {
-    speed: 400
   };
 
   constructor(private router: Router,
-    private storage: StorageService) { }
+    private storage: StorageService,
+    private nav: NavController) { }
 
   ngOnInit() {
     this.storage.write('first', true);
   }
 
   gotoLogin() {
-    this.router.navigate(['/login']);
+    this.nav.navigateRoot('login');
   }
 }

@@ -39,7 +39,7 @@
     </ion-item>
     <div class="ion-padding">
       <div class="imgDiv">
-        <ion-img *ngIf="model.quit_state==0" [src]="addImage" (click)="upload()"></ion-img>
+        <ion-img *ngIf="model.quit_state==0" [src]="setSafe(addImage)" (click)="upload()"></ion-img>
         <ion-img *ngIf="model.quit_state!=0&&model.file_url" [src]="model.file_url" (click)="gotoImageDetail()"></ion-img>
         <ion-img *ngIf="model.quit_state!=0&&(!model.file_url)" src="../../assets/image/noImage.jpg"></ion-img>
       </div>

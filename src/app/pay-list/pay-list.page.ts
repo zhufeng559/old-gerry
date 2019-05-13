@@ -34,14 +34,15 @@ export class PayListPage implements OnInit {
     }
 
   ngOnInit() {
+  }
+
+  async ionViewDidEnter () {
+    await this.common.showLoading();
     const user = this.common.checkLogin();
     if (user) {
       this.condition.token = user.token;
       this.condition.creator = user.rows.userId;
     }
-  }
-
-  ionViewDidEnter () {
     console.log('PayListPage');
     const params = this.storage.read<{
       start_date: string,

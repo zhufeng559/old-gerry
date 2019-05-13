@@ -17,9 +17,9 @@ export class RegisterPage implements OnInit {
   model = {
     phone: '',
     password: '',
-    name: ''
+    name: '',
+    code: ''
   };
-  code = '';
   text = '获取验证码';
   agreement = '《注册协议》';
   countdown = 60;

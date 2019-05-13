@@ -8,6 +8,7 @@
     <ion-tab-button tab="my">
       <ion-label>我的</ion-label>
       <ion-icon name="person"></ion-icon>
+      <ion-badge *ngIf="count>0" color="danger">{{count}}</ion-badge>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

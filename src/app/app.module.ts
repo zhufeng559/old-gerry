@@ -12,6 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpService } from '../service/common/http.service';
 import { StorageService } from '../service/common/storage.service';
+import { Camera } from '@ionic-native/camera/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +25,8 @@ import { StorageService } from '../service/common/storage.service';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     HttpService,
     StorageService,
+    Camera,
+    FileTransfer,
   ],
   bootstrap: [AppComponent]
 })

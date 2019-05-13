@@ -7,11 +7,16 @@ import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { ActionSheetController, NavController } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.page.html',
   styleUrls: ['./order-detail.page.scss'],
+  providers: [DatePipe]
 })
 export class OrderDetailPage implements OnInit {
 
@@ -37,6 +42,13 @@ export class OrderDetailPage implements OnInit {
   UPLOAD_URL = environment.UPLOAD_URL;
   @ViewChild('form') form: NgForm;
   user;
+  options: CameraOptions = {
+    destinationType: this.camera.DestinationType.FILE_URI,
+    sourceType: this.camera.PictureSourceType.CAMERA,
+    allowEdit: false,
+    mediaType: this.camera.MediaType.PICTURE,
+    saveToPhotoAlbum: false
+  };
 
   constructor(private http: HttpService,
     private common: CommonService,
@@ -44,15 +56,21 @@ export class OrderDetailPage implements OnInit {
     public activeRoute: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,
     public nav: NavController,
-    public storage: StorageService) {
+    public storage: StorageService,
+    private camera: Camera,
+    private transfer: FileTransfer,
+    private sanitizer: DomSanitizer,
+    public datePipe: DatePipe, ) {
   }
 
+  fileTransfer: FileTransferObject = this.transfer.create();
+
   ngOnInit() {
-    this.user = this.common.checkLogin();
-    this.condition.token = this.user.token;
   }
 
   ionViewDidEnter () {
+    this.user = this.common.checkLogin();
+    this.condition.token = this.user.token;
     this.activeRoute.queryParams.subscribe((params: Params) => {
       this.condition.id = params['id'] || '' ;
       this.load();
@@ -110,6 +128,35 @@ export class OrderDetailPage implements OnInit {
     }
   }
 
+  takePhoto() {
+    this.camera.getPicture(this.options).then((uri) => {
+      const fo: FileUploadOptions = {
+        fileKey: 'files',
+        fileName: `${this.datePipe.transform(new Date(), 'yyyyMMddhhmmss')}.jpg`,
+        headers: {}
+     };
+     this.common.showLoading().then(() => {
+      this.fileTransfer.upload(uri, this.UPLOAD_URL, fo)
+      .then((data) => {
+        this.common.hideLoading();
+        const result = JSON.parse(data.response);
+        if (this.common.isSuccess(result.code)) {
+          this.common.success('上传成功').then(() => {
+            this.model.file_id = result.rows.file_id;
+            this.model.file_url = result.rows.file_url;
+          });
+        } else {
+          this.common.errorSync(`上传错误{${result.resultNode}}`);
+        }
+      }, (err) => {
+        this.common.errorSync(`未拍摄照片${err.message}`);
+      });
+     }).catch(err => {
+      this.common.errorSync(`未拍摄照片${err.message}`);
+     });
+     });
+  }
+
   async upload() {
     if (this.model.quit_state == 0) {
       const actionSheet = await this.actionSheetCtrl.create({
@@ -118,6 +165,7 @@ export class OrderDetailPage implements OnInit {
             icon: 'camera',
             text: '打开相机',
             handler: () => {
+              this.takePhoto();
             }
           }, {
             icon: 'image',
@@ -143,7 +191,7 @@ export class OrderDetailPage implements OnInit {
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', (evt: any, ) => {
           const result = JSON.parse(evt.target.responseText);
-          if (result.code >= 0) {
+          if (this.common.isSuccess(result.code)) {
             this.common.success('上传成功').then(() => {
               this.model.file_id = result.rows.file_id;
               this.addImage = result.rows.file_url;
@@ -168,5 +216,9 @@ export class OrderDetailPage implements OnInit {
         nodelete : nodelete
       }
     });
+  }
+
+  setSafe(url) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 }

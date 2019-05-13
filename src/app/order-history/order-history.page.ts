@@ -43,7 +43,8 @@ export class OrderHistoryPage implements OnInit {
     }
   }
 
-  ionViewDidEnter () {
+  async ionViewDidEnter () {
+    await this.common.showLoading();
     console.log('OrderHistoryPage');
     const params = this.storage.read<{
       create_time: string,
@@ -67,7 +68,6 @@ export class OrderHistoryPage implements OnInit {
 
   async load() {
     this.list = new Array();
-    await this.common.showLoading();
     return this.http.post('/request/get_order_list' , this.condition).toPromise().then(res => {
       this.common.hideLoading();
       const r = res as any;

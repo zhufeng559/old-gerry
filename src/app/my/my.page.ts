@@ -6,11 +6,16 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AlertController, ActionSheetController } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
 import { environment } from '../../environments/environment';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-my',
   templateUrl: './my.page.html',
   styleUrls: ['./my.page.scss'],
+  providers: [DatePipe]
 })
 export class MyPage implements OnInit {
 
@@ -30,6 +35,20 @@ export class MyPage implements OnInit {
     file_id: '',
     file_url: ''
   };
+  condition = {
+    creator: '',
+    token: '',
+  };
+  count = 0;
+
+
+  options: CameraOptions = {
+    destinationType: this.camera.DestinationType.FILE_URI,
+    sourceType: this.camera.PictureSourceType.CAMERA,
+    allowEdit: false,
+    mediaType: this.camera.MediaType.PICTURE,
+    saveToPhotoAlbum: false
+  };
 
   constructor(private http: HttpService,
     private common: CommonService,
@@ -37,8 +56,14 @@ export class MyPage implements OnInit {
     public activeRoute: ActivatedRoute,
     public alertCtrl: AlertController,
     private storage: StorageService,
-    private actionSheetCtrl: ActionSheetController) {
+    private actionSheetCtrl: ActionSheetController,
+    private camera: Camera,
+    private transfer: FileTransfer,
+    private sanitizer: DomSanitizer,
+    public datePipe: DatePipe, ) {
     }
+
+  fileTransfer: FileTransferObject = this.transfer.create();
 
   ngOnInit() {
   }
@@ -46,6 +71,12 @@ export class MyPage implements OnInit {
   ionViewDidEnter () {
     console.log('MyPage');
     this.user = this.common.checkLogin();
+    if (this.user) {
+      this.condition.token = this.user.token;
+      this.condition.creator = this.user.rows.userId;
+    }
+    this.load();
+
     this.http.post('/request/user_detail', {
       userId: this.user.rows.userId,
       token: this.user.token
@@ -58,6 +89,13 @@ export class MyPage implements OnInit {
         this.model.id_number = this.model.identity_card;
         this.model.nickName = this.model.nickname;
       }
+    });
+  }
+
+  async load() {
+    this.http.post('/request/order_message' , this.condition).toPromise().then(res => {
+      const r = res as any;
+      this.count = r.draw || 0;
     });
   }
 
@@ -113,6 +151,7 @@ export class MyPage implements OnInit {
           icon: 'camera',
           text: '打开相机',
           handler: () => {
+            this.takePhoto();
           }
         }, {
           icon: 'image',
@@ -139,13 +178,11 @@ export class MyPage implements OnInit {
         xhr.addEventListener('load', (evt: any, ) => {
           const result = JSON.parse(evt.target.responseText);
           this.common.hideLoading();
-          if (result.code >= 0) {
+          if (this.common.isSuccess(result.code)) {
+            this.submit();
             this.common.success('上传成功');
             this.model.file_id = result.rows.file_id;
             this.model.file_url = result.rows.file_url;
-            setTimeout(() => {
-              this.submit();
-            }, 300);
           } else {
             this.common.errorSync(`上传错误{${result.resultNode}}`);
           }
@@ -168,5 +205,38 @@ export class MyPage implements OnInit {
       }, err => {
         this.common.requestError(err);
       });
+    }
+
+    takePhoto() {
+      this.camera.getPicture(this.options).then((uri) => {
+        const fo: FileUploadOptions = {
+          fileKey: 'files',
+          fileName: `${this.datePipe.transform(new Date(), 'yyyyMMddhhmmss')}.jpg`,
+          headers: {}
+       };
+       this.common.showLoading().then(() => {
+        this.fileTransfer.upload(uri, this.UPLOAD_URL, fo)
+        .then((data) => {
+          this.common.hideLoading();
+          const result = JSON.parse(data.response);
+          if (this.common.isSuccess(result.code)) {
+            this.common.success('上传成功').then(() => {
+              this.model.file_id = result.rows.file_id;
+              this.model.file_url = result.rows.file_url;
+            });
+          } else {
+            this.common.errorSync(`上传错误{${result.resultNode}}`);
+          }
+        }, (err) => {
+          this.common.errorSync(`未拍摄照片${err.message}`);
+        });
+       }).catch(err => {
+        this.common.errorSync(`未拍摄照片${err.message}`);
+       });
+       });
+    }
+
+    setSafe(url) {
+      return this.sanitizer.bypassSecurityTrustUrl(url);
     }
 }

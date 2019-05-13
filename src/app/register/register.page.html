@@ -28,7 +28,7 @@
     </ion-item>
     <ion-item class="ion-margin-top">
       <ion-icon slot="start" name="unlock"></ion-icon>
-      <ion-input name="code" class="ion-no-padding" [(ngModel)]="code" type="text" placeholder="请输入验证码" required>
+      <ion-input name="code" class="ion-no-padding" [(ngModel)]="model.code" type="text" placeholder="请输入验证码" required>
       </ion-input>
       <ion-button #btnCode slot="end" color="primary" (click)="sendCode()">
         <ion-label>

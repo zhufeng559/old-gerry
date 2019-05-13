@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { ToastController, LoadingController, NavController } from '@ionic/angular';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class CommonService {
   constructor(private toastCtrl: ToastController,
      private storage: StorageService,
      public router: Router,
-     public loading: LoadingController ) { }
+     public loading: LoadingController,
+     public nav: NavController ) { }
 
   async errorSync(msg) {
     const toast = await this.toastCtrl.create({
@@ -44,6 +46,7 @@ export class CommonService {
     this.loader = await this.loading.create({
       spinner: 'crescent',
       message: msg,
+      duration: 2000
     });
     await this.loader.present();
   }
@@ -60,7 +63,7 @@ export class CommonService {
   checkLogin() {
     const user = this.storage.read<any>('user');
     if (!user) {
-      this.router.navigate(['/login']);
+      this.nav.navigateRoot('login');
     } else {
       return user;
     }

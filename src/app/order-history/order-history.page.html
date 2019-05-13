@@ -25,8 +25,8 @@
 
     <ion-item *ngFor="let item of list" lines="none" detail (click)="gotoOrderDetail(item?.id)">
       <ion-thumbnail slot="start">
-        <img *ngIf="item?.pack_pic" [src]="item?.pack_pic">
-        <img *ngIf="!item?.pack_pic" src="../../assets/image/noImage.jpg">
+        <img *ngIf="item?.file_url" [src]="item?.file_url">
+        <img *ngIf="!item?.file_url" src="../../assets/image/noImage.jpg">
       </ion-thumbnail>
       <ion-label>
         <h4>箱&nbsp;&nbsp;&nbsp;号:{{item?.ctnno}} <span style="float: right;color: #3880ff">{{getStatus(item)}}</span>
