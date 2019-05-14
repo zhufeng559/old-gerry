@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
     public activeRoute: ActivatedRoute,
     public alertCtrl: AlertController,
     private storage: StorageService) {
-    }
+    }  
 
 
   ngOnInit() {
