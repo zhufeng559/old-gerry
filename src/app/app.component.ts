@@ -6,6 +6,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router, NavigationStart } from '@angular/router';
 import { StorageService } from '../service/common/storage.service';
+import { CommonService } from '../service/common/common.service';
+import { HttpService } from '../service/common/http.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +21,9 @@ export class AppComponent {
     private router: Router,
     private storage: StorageService,
     private alertCtrl: AlertController,
-    private nav: NavController
+    private nav: NavController,
+    private common: CommonService,
+    private http: HttpService
   ) {
     this.initializeApp();
     this.router.events.subscribe(event => {
@@ -27,6 +31,21 @@ export class AppComponent {
         if ((<NavigationStart>event).url.indexOf('welcome') < 0) {
           if (!this.storage.read<boolean>('first')) {
             this.nav.navigateRoot('welcome');
+          }
+        }
+        if ((<NavigationStart>event).url.indexOf('login') < 0) {
+          const user = this.common.checkLogin();
+          if ( user && user.rows) {
+            this.http.post('/request/user_detail', {
+              userId: user.rows.userId,
+              token: user.token
+            }).toPromise().then(res => {
+              const r = res as any;
+              if (!this.common.isSuccess(r.code)) {
+                this.common.errorSync('登录已过期');
+                this.nav.navigateRoot('login');
+              }
+            });
           }
         }
       }

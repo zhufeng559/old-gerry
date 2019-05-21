@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="comm.oldgerry.www" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="comm.oldgerry.www" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Old Gerry</name>
     <description>Old Gerry app.</description>
     <author email="519043025@qq.com" href="http://ionicframework.com/">zhufeng</author>
@@ -14,16 +14,11 @@
     <preference name="ScrollEnabled" value="false" />
     <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
-    <preference name="SplashScreen" value="screen"/>
-    <!--禁止启动时出现转圈 -->
+    <preference name="SplashScreen" value="screen" />
     <preference name="ShowSplashScreenSpinner" value="false" />
-    <!--在Android平台下的特殊设置，每次打开APP都显示启动页-->
-    <preference name="SplashShowOnlyFirstTime" value="false"/>
-    <!--设置启动页不自动消失，原先默认值为true-->
+    <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="AutoHideSplashScreen" value="false" />
-    <!--设置显示启动页时间为30秒，默认为3秒。若想禁用启动页，则设置value为0。如果是iOS平台上想禁止启动页面，还需要添加<preference name="FadeSplashScreenDuration" value="0"/>-->
-    <preference name="SplashScreenDelay" value="30000"/>
-    <!--设置启动页直接消失，默认值为true-->
+    <preference name="SplashScreenDelay" value="30000" />
     <preference name="FadeSplashScreen" value="false" />
     <platform name="android">
         <allow-intent href="market:*" />

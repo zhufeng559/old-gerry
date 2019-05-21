@@ -63,10 +63,10 @@ export class MyMessagePage implements OnInit {
 
   getContent(item) {
     let str = '';
-    if (item.quit_state == 0){
+    if (item.state == 1){
       str = `退回原因:${item.reason},`;
     }
-    return `箱号为${item.ctnno},提单号为${item.ladingbillnumber}的订单${this.common.getStatusDesc(item.quit_state)},${str}点击查看详情`;
+    return `箱号为${item.ctnno},提单号为${item.ladingbillnumber}的订单${this.common.getStatusDesc(item.state)},${str}点击查看详情`;
   }
 
   getReadDesc(item) {

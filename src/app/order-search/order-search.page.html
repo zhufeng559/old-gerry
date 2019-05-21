@@ -11,21 +11,23 @@
 
   <ion-item>
     <ion-label>日&nbsp;&nbsp;&nbsp;期：</ion-label>
-    <ion-datetime [(ngModel)]="model.create_time" display-format="YYYY-MM-DD" placeholder="请选择日期" cancelText="取消" doneText="确定"></ion-datetime>
+    <ion-datetime [(ngModel)]="model.create_time" display-format="YYYY-MM-DD" placeholder="请选择日期" cancelText="取消"
+      doneText="确定"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>关键字：</ion-label>
-    <ion-input style="text-align:right;" name="keyword" [(ngModel)]="model.keyword" type="text"
-      placeholder="请输入关键字">
+    <ion-input style="text-align:right;" name="keyword" [(ngModel)]="model.keyword" type="text" placeholder="请输入关键字">
     </ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>未发送：</ion-label>
-    <ion-toggle [(ngModel)]="nosend"></ion-toggle>
-  </ion-item>
-  <ion-item>
-    <ion-label>已发送：</ion-label>
-    <ion-toggle [(ngModel)]="send"></ion-toggle>
+    <ion-label>状态</ion-label>
+    <ion-select name="state" [(ngModel)]="model.state" placeholder="请选择状态" okText="确定" cancelText="取消">
+      <ion-select-option value="-1">全部</ion-select-option>
+      <ion-select-option value="0">未审核</ion-select-option>
+      <ion-select-option value="1">退回</ion-select-option>
+      <ion-select-option value="2">审核通过</ion-select-option>
+      <ion-select-option value="6">已发送</ion-select-option>
+    </ion-select>
   </ion-item>
 
   <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">搜索</ion-button>

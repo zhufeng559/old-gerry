@@ -39,15 +39,15 @@
     </ion-item>
     <div class="ion-padding">
       <div class="imgDiv">
-        <ion-img *ngIf="model.quit_state==0" [src]="setSafe(addImage)" (click)="upload()"></ion-img>
-        <ion-img *ngIf="model.quit_state!=0&&model.file_url" [src]="model.file_url" (click)="gotoImageDetail()"></ion-img>
-        <ion-img *ngIf="model.quit_state!=0&&(!model.file_url)" src="../../assets/image/noImage.jpg"></ion-img>
+        <ion-img *ngIf="model.state==1" [src]="addImage" (click)="upload()"></ion-img>
+        <ion-img *ngIf="model.state!=1&&model.file_url" [src]="model.file_url" (click)="gotoImageDetail()"></ion-img>
+        <ion-img *ngIf="model.state!=1&&(!model.file_url)" src="../../assets/image/noImage.jpg"></ion-img>
       </div>
     </div>
-    <input id="imageUpload1" #imageUpload1 type="file" accept="image/*" style="display: none"
-      (change)="imageUpload(imageUpload1)" />
+    <input id="imageUpload2" #imageUpload2 type="file" accept="image/*" style="display: none"
+      (change)="imageUpload(imageUpload2)" />
 
-    <ion-button *ngIf="model.quit_state==0" color="primary" expand="block" class="ion-margin-top" (click)="submit()">重新提交</ion-button>
+    <ion-button *ngIf="model.state==1" color="primary" expand="block" class="ion-margin-top" (click)="submit()">重新提交</ion-button>
   </form>
 
 </ion-content>

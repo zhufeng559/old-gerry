@@ -17,10 +17,8 @@ export class OrderSearchPage implements OnInit {
   model = {
     create_time: '',
     keyword: '',
-    state: 0
+    state: -1
   };
-  nosend = true;
-  send = true;
 
   constructor(private http: HttpService,
     private common: CommonService,
@@ -46,20 +44,8 @@ export class OrderSearchPage implements OnInit {
   }
 
   submit() {
-    let state = 0;
-    if (this.nosend && this.send) {
-      state = 0;
-    } else {
-      if (this.send) {
-        state = 1;
-      }
-      if (this.nosend) {
-        state = 2;
-      }
-    }
-
     this.storage.write('order_search', {
-      state: state,
+      state: this.model.state,
       keyword: this.model.keyword,
       create_time: this.datePipe.transform(this.model.create_time, 'yyyy-MM-dd'),
     });

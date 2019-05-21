@@ -12,6 +12,15 @@
 <ion-content class="ion-padding">
 
   <form #form="ngForm">
+    <ion-item  (click)="upload()">
+      <ion-label>头像</ion-label>
+      <ion-avatar style="margin:0 auto !important;" *ngIf="model?.file_url">
+        <img [src]="model?.file_url">
+      </ion-avatar>
+      <ion-avatar style="margin:0 auto !important;" *ngIf="!model?.file_url">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+    </ion-item>
     <ion-item>
       <ion-label>姓名</ion-label>
       <ion-input style="text-align:right;" name="user_name" [(ngModel)]="model.user_name" type="text"
@@ -31,7 +40,7 @@
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>生日：</ion-label>
+      <ion-label>生日</ion-label>
       <ion-datetime name="birthdate" [(ngModel)]="model.birthdate" display-format="YYYY-MM-DD" placeholder="请选择日期"
         cancelText="取消" doneText="确定"></ion-datetime>
     </ion-item>
@@ -44,5 +53,8 @@
 
     <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>
   </form>
+
+  <input id="imageUpload3" #imageUpload3 type="file" accept="image/*" style="display: none"
+  (change)="imageUpload(imageUpload3)" />
 
 </ion-content>
