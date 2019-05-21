@@ -27,6 +27,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.1.2",
     "autopulous-angular2-soap": "^0.4.7",
+    "build": "0.1.4",
     "cordova-android": "7.1.4",
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-crosswalk-webview-v2": "^2.4.3",

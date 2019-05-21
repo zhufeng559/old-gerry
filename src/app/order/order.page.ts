@@ -27,7 +27,8 @@ export class OrderPage implements OnInit {
     ctnNo: '',
     file_id: '',
     file_url: '',
-    token: ''
+    token: '',
+    file_name: '',
   };
   addImage = '../../assets/image/addImage.jpg';
   UPLOAD_URL = environment.UPLOAD_URL;
@@ -89,10 +90,10 @@ export class OrderPage implements OnInit {
         this.common.hideLoading();
         const result = JSON.parse(data.response);
         if (this.common.isSuccess(result.code)) {
-          this.common.success('上传成功').then(() => {
-            this.model.file_id = result.rows.file_id;
-            this.model.file_url = result.rows.file_url;
-          });
+          this.model.file_id = result.rows.file_id;
+          this.model.file_url = result.rows.file_url;
+          this.model.file_name = result.rows.file_name;
+          this.common.success('上传成功');
         } else {
           this.common.errorSync(`上传错误{${result.resultNode}}`);
         }
@@ -111,6 +112,7 @@ export class OrderPage implements OnInit {
     this.model.file_url = this.storage.read('order_image');
     if (!this.model.file_url) {
       this.model.file_id = '';
+      this.model.file_name = '';
     }
     const user = this.common.checkLogin();
     if (user) {
@@ -121,6 +123,7 @@ export class OrderPage implements OnInit {
     this.model.ladingBillNumber = '';
     this.model.file_id = '';
     this.model.file_url = '';
+    this.model.file_name = '';
     this.form.reset();
   }
 
@@ -135,13 +138,14 @@ export class OrderPage implements OnInit {
         this.common.hideLoading();
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
-          this.common.success();
           this.model.ctnNo = '';
           this.model.ladingBillNumber = '';
           this.model.file_id = '';
           this.model.file_url = '';
+          this.model.file_name = '';
           this.storage.write('order_image', '');
           this.form.reset();
+          this.common.success();
         } else {
           this.common.errorSync(`建单错误{${r.resultNode}}`);
         }
@@ -188,10 +192,10 @@ export class OrderPage implements OnInit {
           const result = JSON.parse(evt.target.responseText);
           this.common.hideLoading();
           if (this.common.isSuccess(result.code)) {
-            this.common.success('上传成功').then(() => {
-              this.model.file_id = result.rows.file_id;
-              this.model.file_url = result.rows.file_url;
-            });
+            this.model.file_id = result.rows.file_id;
+            this.model.file_url = result.rows.file_url;
+            this.model.file_name = result.rows.file_name;
+            this.common.success('上传成功');
           } else {
             this.common.errorSync(`上传错误{${result.resultNode}}`);
           }

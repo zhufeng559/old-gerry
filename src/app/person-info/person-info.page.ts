@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { NgForm } from '@angular/forms';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { AlertController, ActionSheetController } from '@ionic/angular';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-person-info',
@@ -25,17 +29,33 @@ export class PersonInfoPage implements OnInit {
     identity_card: '',
     userId: '',
     token: '',
-    file_id: ''
+    file_id: '',
+    file_url: '',
   };
   @ViewChild('form') form: NgForm;
   user;
+  UPLOAD_URL = environment.UPLOAD_URL;
+
+  options: CameraOptions = {
+    destinationType: this.camera.DestinationType.FILE_URI,
+    sourceType: this.camera.PictureSourceType.CAMERA,
+    allowEdit: false,
+    mediaType: this.camera.MediaType.PICTURE,
+    saveToPhotoAlbum: false
+  };
 
   constructor(private http: HttpService,
     private common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    public datePipe: DatePipe, ) {
+    private camera: Camera,
+    private transfer: FileTransfer,
+    public datePipe: DatePipe,
+    private actionSheetCtrl: ActionSheetController ) {
     }
+
+  fileTransfer: FileTransferObject = this.transfer.create();
+
 
   ngOnInit() {
     this.user = this.common.checkLogin();
@@ -78,4 +98,81 @@ export class PersonInfoPage implements OnInit {
   back() {
     this.router.navigate(['/tabs/my']);
   }
+
+  async upload() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: '请选择',
+      buttons: [{
+          icon: 'camera',
+          text: '打开相机',
+          handler: () => {
+            this.takePhoto();
+          }
+        }, {
+          icon: 'image',
+          text: '打开相册',
+          handler: () => {
+            document.getElementById('imageUpload3').click();
+          }
+        }
+      ]
+    });
+    await actionSheet.present();
+  }
+
+  async imageUpload(element: any) {
+    if (element.files == null || element.files.length < 1) {
+      return;
+    }
+    await this.common.showLoading();
+    const fd = new FormData();
+    for (let i = 0, len = element.files.length; i < len; i++) {
+      const file = element.files[i];
+        fd.append(file.type, file);
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', (evt: any, ) => {
+          const result = JSON.parse(evt.target.responseText);
+          this.common.hideLoading();
+          if (this.common.isSuccess(result.code)) {
+            this.model.file_id = result.rows.file_id;
+            this.model.file_url = result.rows.file_url;
+            console.log(result.rows.file_url);
+            this.common.success('上传成功');
+          } else {
+            this.common.errorSync(`上传错误{${result.resultNode}}`);
+          }
+        }, false);
+        xhr.open('post', this.UPLOAD_URL);
+        xhr.send(fd);
+    }
+  }
+
+    takePhoto() {
+      this.camera.getPicture(this.options).then((uri) => {
+        const fo: FileUploadOptions = {
+          fileKey: 'files',
+          fileName: `${this.datePipe.transform(new Date(), 'yyyyMMddhhmmss')}.jpg`,
+          headers: {}
+       };
+       this.common.showLoading().then(() => {
+        this.fileTransfer.upload(uri, this.UPLOAD_URL, fo)
+        .then((data) => {
+          this.common.hideLoading();
+          const result = JSON.parse(data.response);
+          if (this.common.isSuccess(result.code)) {
+            this.model.file_id = result.rows.file_id;
+            this.model.file_url = result.rows.file_url;
+            console.log(result.rows.file_url);
+            this.common.success('上传成功');
+          } else {
+            this.common.errorSync(`上传错误{${result.resultNode}}`);
+          }
+        }, (err) => {
+          this.common.errorSync(`未拍摄照片${err.message}`);
+        });
+       }).catch(err => {
+        this.common.errorSync(`未拍摄照片${err.message}`);
+       });
+       });
+    }
 }

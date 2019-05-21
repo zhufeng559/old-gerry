@@ -17,7 +17,6 @@ export class OrderHistoryPage implements OnInit {
   condition = {
     token : '',
     create_time: '',
-    quit_state: -1,
     reason: '',
     keyword: '',
     creator: '',
@@ -111,12 +110,7 @@ export class OrderHistoryPage implements OnInit {
   }
 
   getStatus(item) {
-    if (item.state === '1') {
-      return '已发送';
-    } else if (item.state === '2') {
-      return '未发送';
-    }
-    return '未知状态';
+    return this.common.getStatusDesc(item.state);
   }
 
   gotoOrderSearch() {

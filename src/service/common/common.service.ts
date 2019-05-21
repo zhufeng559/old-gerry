@@ -46,7 +46,7 @@ export class CommonService {
     this.loader = await this.loading.create({
       spinner: 'crescent',
       message: msg,
-      duration: 2000
+      duration: 6000
     });
     await this.loader.present();
   }
@@ -76,11 +76,13 @@ export class CommonService {
   getStatusDesc(status) {
     switch (status) {
       case '0':
-        return '已退回';
-      case '1':
-        return '已发送';
-      case '2':
         return '未审核';
+      case '1':
+        return '退回';
+      case '2':
+        return '审核通过';
+      case '6':
+        return '已发送';
     }
   }
 }

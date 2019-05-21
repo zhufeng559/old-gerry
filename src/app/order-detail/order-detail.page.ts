@@ -31,11 +31,11 @@ export class OrderDetailPage implements OnInit {
     ctnno: '',
     file_id: '',
     file_url: '',
+    file_name: '',
     id: 0,
     ladingbillnumber: '',
     state: 0,
     reason: '',
-    quit_state: -1
   };
   addImage = '../../assets/image/addImage.jpg';
   stateDesc = '';
@@ -77,19 +77,18 @@ export class OrderDetailPage implements OnInit {
     });
   }
 
-  load() {
+  async load() {
+    await this.common.showLoading();
     return this.http.post('/request/order_detail', this.condition).toPromise().then(res => {
+      this.common.hideLoading();
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.model = r.rows;
-        if (this.model.quit_state == 0) {
-          this.stateDesc = '已退回';
+        this.stateDesc = this.common.getStatusDesc(this.model.state);
+        if (this.model.state == 1) {
           this.model.file_id = '';
           this.model.file_url = '';
-        } else if (this.model.quit_state == 1) {
-            this.stateDesc = '已发送';
-        } else if (this.model.quit_state == 2) {
-            this.stateDesc = '未审核';
+          this.model.file_name = '';
         }
       } else {
         this.common.errorSync(`获取订单详情失败{${r.resultNode}}`);
@@ -99,7 +98,7 @@ export class OrderDetailPage implements OnInit {
     });
   }
 
-  submit() {
+  async submit() {
     if (this.model.file_id == '') {
       this.common.errorSync('请上传图片');
       return;
@@ -112,7 +111,9 @@ export class OrderDetailPage implements OnInit {
         file_id: this.model.file_id,
         token: this.user.token
       };
+      await this.common.showLoading();
       this.http.post('/request/create_order', model).subscribe(res => {
+        this.common.hideLoading();
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
           this.common.success();
@@ -141,10 +142,10 @@ export class OrderDetailPage implements OnInit {
         this.common.hideLoading();
         const result = JSON.parse(data.response);
         if (this.common.isSuccess(result.code)) {
-          this.common.success('上传成功').then(() => {
-            this.model.file_id = result.rows.file_id;
-            this.model.file_url = result.rows.file_url;
-          });
+          this.model.file_id = result.rows.file_id;
+          this.model.file_url = result.rows.file_url;
+          this.model.file_name = result.rows.file_name;
+          this.common.success('上传成功');
         } else {
           this.common.errorSync(`上传错误{${result.resultNode}}`);
         }
@@ -158,7 +159,7 @@ export class OrderDetailPage implements OnInit {
   }
 
   async upload() {
-    if (this.model.quit_state == 0) {
+    if (this.model.state == 1) {
       const actionSheet = await this.actionSheetCtrl.create({
         header: '请选择',
         buttons: [{
@@ -171,7 +172,7 @@ export class OrderDetailPage implements OnInit {
             icon: 'image',
             text: '打开相册',
             handler: () => {
-              document.getElementById('imageUpload1').click();
+              document.getElementById('imageUpload2').click();
             }
           }
         ]
@@ -192,10 +193,10 @@ export class OrderDetailPage implements OnInit {
         xhr.addEventListener('load', (evt: any, ) => {
           const result = JSON.parse(evt.target.responseText);
           if (this.common.isSuccess(result.code)) {
-            this.common.success('上传成功').then(() => {
-              this.model.file_id = result.rows.file_id;
-              this.addImage = result.rows.file_url;
-            });
+            this.model.file_id = result.rows.file_id;
+            this.model.file_url = result.rows.file_url;
+            this.model.file_name = result.rows.file_name;
+            this.common.success('上传成功');
           } else {
             this.common.errorSync(`上传错误{${result.resultNode}}`);
           }
@@ -208,7 +209,7 @@ export class OrderDetailPage implements OnInit {
   gotoImageDetail() {
     this.storage.write('order_image', this.model.file_url);
     let nodelete = 0;
-    if (this.model.quit_state == 0) {
+    if (this.model.state == 1) {
       nodelete = 1;
     }
     this.router.navigate(['/image-detail'], {
