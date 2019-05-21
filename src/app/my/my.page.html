@@ -8,13 +8,13 @@
 
   <div style="height: 180px;background: #7a9ad7;">
     <div style="padding-top: 40px;">
-      <ion-avatar style="margin:0 auto !important;" *ngIf="model.file_url">
-        <img [src]="model.file_url">
+      <ion-avatar style="margin:0 auto !important;" *ngIf="file_url">
+        <img [src]="file_url">
       </ion-avatar>
-      <ion-avatar style="margin:0 auto !important;" *ngIf="!model.file_url">
+      <ion-avatar style="margin:0 auto !important;" *ngIf="!file_url">
         <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
       </ion-avatar>
-      <p style="text-align: center;color: white;">{{model.phone}}</p>
+      <p style="text-align: center;color: white;">{{phone}}</p>
     </div>
   </div>
 

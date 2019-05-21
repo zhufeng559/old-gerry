@@ -34,8 +34,7 @@
       </ion-label>
     </ion-item>
 
-    <ion-img class="ion-margin-top" src="../../assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
-    </ion-img>
+    <img class="ion-margin-top" src="assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
     <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无数据</p>
 
   </ion-list>

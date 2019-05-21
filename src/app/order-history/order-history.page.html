@@ -26,7 +26,7 @@
     <ion-item *ngFor="let item of list" lines="none" (click)="gotoOrderDetail(item?.id)">
       <ion-thumbnail slot="start">
         <img *ngIf="item?.file_url" [src]="item?.file_url">
-        <img *ngIf="!item?.file_url" src="../../assets/image/noImage.jpg">
+        <img *ngIf="!item?.file_url" src="assets/image/noImage.jpg">
       </ion-thumbnail>
       <ion-label>
         <h4>箱&nbsp;&nbsp;&nbsp;号:{{item?.ctnno}}
@@ -38,8 +38,7 @@
 
   </ion-list>
 
-  <ion-img class="ion-margin-top" src="../../assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
-  </ion-img>
+  <img class="ion-margin-top" src="assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
   <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无数据</p>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">

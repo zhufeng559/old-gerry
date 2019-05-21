@@ -20,7 +20,7 @@ export class OrderHistoryPage implements OnInit {
     reason: '',
     keyword: '',
     creator: '',
-    state: 0,
+    state: '-1',
     pages: 1,
     size: 10
   };
@@ -48,11 +48,11 @@ export class OrderHistoryPage implements OnInit {
     const params = this.storage.read<{
       create_time: string,
       keyword: string,
-      state: number
+      state: string
     }>('order_search');
     if (params) {
       this.condition.create_time = params.create_time || '' ;
-      this.condition.state = params.state || 0;
+      this.condition.state = params.state || '-1';
       this.condition.keyword = params.keyword || '';
     }
     this.load();
@@ -60,7 +60,7 @@ export class OrderHistoryPage implements OnInit {
 
   ionViewDidLeave() {
     this.condition.create_time = '' ;
-    this.condition.state = 0;
+    this.condition.state = '-1';
     this.condition.keyword = '';
     this.storage.remove('order_search');
   }

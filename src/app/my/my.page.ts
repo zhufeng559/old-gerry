@@ -3,7 +3,7 @@ import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, Events } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
 import { DatePipe } from '@angular/common';
 
@@ -16,25 +16,13 @@ import { DatePipe } from '@angular/common';
 export class MyPage implements OnInit {
 
   user ;
-  model = {
-    user_name: '',
-    sex: '',
-    phone: '',
-    nickName: '',
-    nickname: '',
-    birthdate: '',
-    id_number: '',
-    identity_card: '',
-    userId: '',
-    token: '',
-    file_id: '',
-    file_url: ''
-  };
   condition = {
     creator: '',
     token: '',
   };
   count = 0;
+  file_url = '';
+  phone = '';
 
   constructor(private http: HttpService,
     private common: CommonService,
@@ -42,7 +30,20 @@ export class MyPage implements OnInit {
     public activeRoute: ActivatedRoute,
     public alertCtrl: AlertController,
     private storage: StorageService,
-    public datePipe: DatePipe, ) {
+    public datePipe: DatePipe,
+    private events: Events ) {
+      events.subscribe('new', (file) => {
+        this.http.post('/request/user_detail', {
+          userId: this.user.rows.userId,
+          token: this.user.token
+        }).toPromise().then(res => {
+          const r = res as any;
+          if (this.common.isSuccess(r.code)) {
+            this.file_url = r.rows.file_url;
+            this.phone = r.rows.phone;
+          }
+        });
+      });
     }
 
   ngOnInit() {
@@ -55,7 +56,6 @@ export class MyPage implements OnInit {
       this.condition.token = this.user.token;
       this.condition.creator = this.user.rows.userId;
     }
-    this.load();
 
     this.http.post('/request/user_detail', {
       userId: this.user.rows.userId,
@@ -63,13 +63,12 @@ export class MyPage implements OnInit {
     }).toPromise().then(res => {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
-        this.model = r.rows;
-        this.model.userId = this.user.userId;
-        this.model.token = this.user.token;
-        this.model.id_number = this.model.identity_card;
-        this.model.nickName = this.model.nickname;
+        this.file_url = r.rows.file_url;
+        this.phone = r.rows.phone;
       }
     });
+
+    this.load();
   }
 
   async load() {

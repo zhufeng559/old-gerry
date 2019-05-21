@@ -44,7 +44,7 @@ export class CommonService {
   async showLoading(msg = '') {
     this.isLoading = true;
     this.loader = await this.loading.create({
-      spinner: 'crescent',
+      spinner: 'circles',
       message: msg,
       duration: 6000
     });

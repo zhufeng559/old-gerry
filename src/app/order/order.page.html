@@ -31,8 +31,8 @@
     </ion-item>
     <div class="ion-padding">
       <div class="imgDiv">
-          <ion-img *ngIf="!model.file_url" [src]="addImage" (click)="upload()"></ion-img>
-          <ion-img *ngIf="model.file_url" [src]="model.file_url" (click)="gotoImageDetail()"></ion-img>
+          <img *ngIf="!model.file_url" [src]="addImage" (click)="upload()">
+          <img *ngIf="model.file_url" [src]="model.file_url" (click)="gotoImageDetail()">
       </div>
     </div>
     <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>

@@ -43,8 +43,7 @@
 
     </ion-card>
 
-    <ion-img class="ion-margin-top" src="../../assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
-    </ion-img>
+    <img class="ion-margin-top" src="assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
     <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无消息</p>
 
   </ion-list>

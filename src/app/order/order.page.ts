@@ -30,7 +30,7 @@ export class OrderPage implements OnInit {
     token: '',
     file_name: '',
   };
-  addImage = '../../assets/image/addImage.jpg';
+  addImage = 'assets/image/addImage.jpg';
   UPLOAD_URL = environment.UPLOAD_URL;
   @ViewChild('form') form: NgForm;
   options: CameraOptions = {

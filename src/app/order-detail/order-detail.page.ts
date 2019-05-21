@@ -37,7 +37,7 @@ export class OrderDetailPage implements OnInit {
     state: 0,
     reason: '',
   };
-  addImage = '../../assets/image/addImage.jpg';
+  addImage = 'assets/image/addImage.jpg';
   stateDesc = '';
   UPLOAD_URL = environment.UPLOAD_URL;
   @ViewChild('form') form: NgForm;

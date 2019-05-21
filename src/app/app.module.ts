@@ -14,7 +14,6 @@ import { HttpService } from '../service/common/http.service';
 import { StorageService } from '../service/common/storage.service';
 import { Camera } from '@ionic-native/camera/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +23,6 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
     HttpService,
     StorageService,
     Camera,

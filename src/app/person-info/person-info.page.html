@@ -12,7 +12,7 @@
 <ion-content class="ion-padding">
 
   <form #form="ngForm">
-    <ion-item  (click)="upload()">
+    <ion-item (click)="upload()">
       <ion-label>头像</ion-label>
       <ion-avatar style="margin:0 auto !important;" *ngIf="model?.file_url">
         <img [src]="model?.file_url">
@@ -55,6 +55,6 @@
   </form>
 
   <input id="imageUpload3" #imageUpload3 type="file" accept="image/*" style="display: none"
-  (change)="imageUpload(imageUpload3)" />
+    (change)="imageUpload(imageUpload3)" />
 
 </ion-content>

@@ -17,7 +17,7 @@ export class OrderSearchPage implements OnInit {
   model = {
     create_time: '',
     keyword: '',
-    state: -1
+    state: '-1'
   };
 
   constructor(private http: HttpService,
@@ -36,7 +36,7 @@ export class OrderSearchPage implements OnInit {
     const params = this.storage.read<{
       create_time: string,
       keyword: string,
-      state: number
+      state: string
     }>('order_search');
     if (params) {
       this.model = params;

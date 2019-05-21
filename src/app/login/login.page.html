@@ -1,7 +1,6 @@
 <ion-content>
 
-  <ion-img src="../../assets/image/login.png">
-  </ion-img>
+  <img src="assets/image/login.png">
 
   <form #form="ngForm" class="ion-padding">
     <ion-item>
@@ -20,7 +19,8 @@
         <ion-icon name="eye-off" *ngIf="!eye"></ion-icon>
       </ion-button>
     </ion-item>
-    <ion-button class="ion-padding-top" color="primary" expand="block" class="ion-margin-top" (click)="submit()" [disabled]="(!model.userName)||(!model.password)">登录
+    <ion-button class="ion-padding-top" color="primary" expand="block" class="ion-margin-top" (click)="submit()"
+      [disabled]="(!model.userName)||(!model.password)">登录
     </ion-button>
     <div class="ion-padding"><a style="float: left;text-decoration: none;" [routerLink]="['/register']">我要注册</a><a
         style="float: right;text-decoration: none;" [routerLink]="['/forget-password']">忘记密码</a></div>
