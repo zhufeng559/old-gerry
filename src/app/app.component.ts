@@ -33,7 +33,11 @@ export class AppComponent {
             this.nav.navigateRoot('welcome');
           }
         }
-        if ((<NavigationStart>event).url.indexOf('login') < 0) {
+        if ((<NavigationStart>event).url.indexOf('login') < 0
+        && (<NavigationStart>event).url.indexOf('register') < 0
+        && (<NavigationStart>event).url.indexOf('agreement') < 0
+        && (<NavigationStart>event).url.indexOf('password') < 0
+        && (<NavigationStart>event).url.indexOf('welcome') < 0) {
           const user = this.common.checkLogin();
           if ( user && user.rows) {
             this.http.post('/request/user_detail', {

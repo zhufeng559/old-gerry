@@ -33,6 +33,11 @@ export class MyPage implements OnInit {
     public datePipe: DatePipe,
     private events: Events ) {
       events.subscribe('new', (file) => {
+        this.user = this.common.checkLogin();
+        if (this.user) {
+          this.condition.token = this.user.token;
+          this.condition.creator = this.user.rows.userId;
+        }
         this.http.post('/request/user_detail', {
           userId: this.user.rows.userId,
           token: this.user.token
@@ -43,6 +48,7 @@ export class MyPage implements OnInit {
             this.phone = r.rows.phone;
           }
         });
+        this.load();
       });
     }
 
@@ -51,30 +57,12 @@ export class MyPage implements OnInit {
 
   ionViewDidEnter () {
     console.log('MyPage');
-    this.user = this.common.checkLogin();
-    if (this.user) {
-      this.condition.token = this.user.token;
-      this.condition.creator = this.user.rows.userId;
-    }
-
-    this.http.post('/request/user_detail', {
-      userId: this.user.rows.userId,
-      token: this.user.token
-    }).toPromise().then(res => {
-      const r = res as any;
-      if (this.common.isSuccess(r.code)) {
-        this.file_url = r.rows.file_url;
-        this.phone = r.rows.phone;
-      }
-    });
-
-    this.load();
   }
 
   async load() {
     this.http.post('/request/order_message' , this.condition).toPromise().then(res => {
       const r = res as any;
-      this.count = r.draw || 0;
+      this.count = r.count || 0;
     });
   }
 

@@ -36,7 +36,7 @@ export class TabsPage implements OnInit {
   async load() {
     this.http.post('/request/order_message' , this.condition).toPromise().then(res => {
       const r = res as any;
-      this.count = r.draw || 0;
+      this.count = r.count || 0;
     });
   }
 }

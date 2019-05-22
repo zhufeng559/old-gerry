@@ -69,6 +69,15 @@ export class CommonService {
     }
   }
 
+  startCheckLogin() {
+    const user = this.storage.read<any>('user');
+    if (!user) {
+      return null;
+    } else {
+      return user;
+    }
+  }
+
   isSuccess(res) {
     return res >= 0;
   }
@@ -81,7 +90,7 @@ export class CommonService {
         return '退回';
       case '2':
         return '审核通过';
-      case '6':
+      case '3':
         return '已发送';
     }
   }

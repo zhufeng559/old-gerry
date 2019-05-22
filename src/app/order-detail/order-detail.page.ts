@@ -144,7 +144,7 @@ export class OrderDetailPage implements OnInit {
         if (this.common.isSuccess(result.code)) {
           this.model.file_id = result.rows.file_id;
           this.model.file_url = result.rows.file_url;
-          this.model.file_name = result.rows.file_name;
+          this.model.file_name = result.rows.original_name;
           this.common.success('上传成功');
         } else {
           this.common.errorSync(`上传错误{${result.resultNode}}`);
@@ -195,7 +195,7 @@ export class OrderDetailPage implements OnInit {
           if (this.common.isSuccess(result.code)) {
             this.model.file_id = result.rows.file_id;
             this.model.file_url = result.rows.file_url;
-            this.model.file_name = result.rows.file_name;
+            this.model.file_name = result.rows.original_name;
             this.common.success('上传成功');
           } else {
             this.common.errorSync(`上传错误{${result.resultNode}}`);
