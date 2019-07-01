@@ -22,7 +22,8 @@ export class OrderPage implements OnInit {
 
   type = '1';
   model = {
-    creator: '',
+    user_id: '',
+    user_name: '',
     ladingBillNumber: '',
     ctnNo: '',
     file_id: '',
@@ -30,7 +31,7 @@ export class OrderPage implements OnInit {
     token: '',
     file_name: '',
   };
-  addImage = 'assets/image/addImage.jpg';
+  addImage = 'assets/image/addImage.png';
   UPLOAD_URL = environment.UPLOAD_URL;
   @ViewChild('form') form: NgForm;
   options: CameraOptions = {
@@ -117,7 +118,7 @@ export class OrderPage implements OnInit {
     const user = this.common.checkLogin();
     if (user) {
       this.model.token = user.token;
-      this.model.creator = user.rows.userId;
+      this.model.user_id = user.rows.userId;
     }
     this.model.ctnNo = '';
     this.model.ladingBillNumber = '';

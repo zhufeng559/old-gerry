@@ -17,7 +17,7 @@ export class MyPage implements OnInit {
 
   user ;
   condition = {
-    creator: '',
+    user_id: '',
     token: '',
   };
   count = 0;
@@ -36,10 +36,10 @@ export class MyPage implements OnInit {
         this.user = this.common.checkLogin();
         if (this.user) {
           this.condition.token = this.user.token;
-          this.condition.creator = this.user.rows.userId;
+          this.condition.user_id = this.user.rows.userId;
         }
         this.http.post('/request/user_detail', {
-          userId: this.user.rows.userId,
+          user_id: this.user.rows.userId,
           token: this.user.token
         }).toPromise().then(res => {
           const r = res as any;

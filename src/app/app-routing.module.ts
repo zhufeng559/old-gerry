@@ -22,6 +22,8 @@ const routes: Routes = [
   { path: 'check-version', loadChildren: './check-version/check-version.module#CheckVersionPageModule' },
   { path: 'welcome', loadChildren: './welcome/welcome.module#WelcomePageModule' },
   { path: 'feedback', loadChildren: './feedback/feedback.module#FeedbackPageModule' },
+  { path: 'order-view', loadChildren: './order-view/order-view.module#OrderViewPageModule' },
+  { path: 'change-password2', loadChildren: './change-password2/change-password2.module#ChangePassword2PageModule' },
 ];
 @NgModule({
   imports: [

@@ -19,6 +19,8 @@ export class OrderSearchPage implements OnInit {
     keyword: '',
     state: '-1'
   };
+  nosend = true;
+  send = true;
 
   constructor(private http: HttpService,
     private common: CommonService,

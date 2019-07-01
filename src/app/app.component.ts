@@ -41,7 +41,7 @@ export class AppComponent {
           const user = this.common.checkLogin();
           if ( user && user.rows) {
             this.http.post('/request/user_detail', {
-              userId: user.rows.userId,
+              user_id: user.rows.userId,
               token: user.token
             }).toPromise().then(res => {
               const r = res as any;

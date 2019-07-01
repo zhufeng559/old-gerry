@@ -5,7 +5,7 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>历史</ion-title>
+    <ion-title class="ion-text-center">历史</ion-title>
     <ion-chip color="light" slot="end" (click)="gotoOrderSearch()">
       <ion-icon name="search"></ion-icon>
       <ion-label>搜索</ion-label>
@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="上拉刷新" refreshingSpinner="circles"
@@ -21,22 +21,41 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
-
-    <ion-item *ngFor="let item of list" lines="none" (click)="gotoOrderDetail(item?.id)">
+  <ion-item-group *ngFor="let item of list">
+    <ion-item-divider>
+      <ion-label>订单编号:{{item?.bill_no}}</ion-label>
+    </ion-item-divider>
+    <ion-item lines="none">
       <ion-thumbnail slot="start">
         <img *ngIf="item?.file_url" [src]="item?.file_url">
         <img *ngIf="!item?.file_url" src="assets/image/noImage.jpg">
       </ion-thumbnail>
       <ion-label>
-        <h4>箱&nbsp;&nbsp;&nbsp;号:{{item?.ctnno}}
-        </h4>
-        <h4>提单号:{{item?.ladingbillnumber}}<span style="float: right;color: #3880ff">{{getStatus(item)}}</span></h4>
-        <p>时&nbsp;&nbsp;&nbsp;间:{{item?.create_time | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+        <p>
+          箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：{{item?.ctnno}}
+        </p>
+        <p>
+          下单时间：{{item?.create_time | date:'MM-dd HH:mm'}}
+        </p>
+        <p>
+          订单状态：{{common.getStatusDesc(item.app_state)}}
+        </p>
       </ion-label>
     </ion-item>
-
-  </ion-list>
+    <ion-item lines="none">
+      <ion-buttons slot="end">
+        <ion-button fill="solid" color="primary" *ngIf="item.state==0" (click)="cancelOrder(item)">
+          取消
+        </ion-button>
+        <ion-button fill="solid" color="primary" *ngIf="item.state<2||item.state==3" (click)='changeOrder(item)'>
+          修改
+        </ion-button>
+        <ion-button fill="solid" color="primary" *ngIf="item.state==8" (click)='reSendOrder(item)'>
+          重新发送
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-item-group>
 
   <img class="ion-margin-top" src="assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
   <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无数据</p>

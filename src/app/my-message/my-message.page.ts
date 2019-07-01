@@ -14,7 +14,7 @@ export class MyMessagePage implements OnInit {
 
   list = new Array();
   condition = {
-    creator: '',
+    user_id: '',
     token: '',
   };
   total: number;
@@ -33,7 +33,7 @@ export class MyMessagePage implements OnInit {
     const user = this.common.checkLogin();
     if (user) {
       this.condition.token = user.token;
-      this.condition.creator = user.rows.userId;
+      this.condition.user_id = user.rows.userId;
     }
     this.load();
   }

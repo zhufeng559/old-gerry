@@ -5,18 +5,20 @@ import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StorageService } from '../../service/common/storage.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pay-list',
   templateUrl: './pay-list.page.html',
   styleUrls: ['./pay-list.page.scss'],
+  providers: [DatePipe]
 })
 export class PayListPage implements OnInit {
 
   list = new Array();
   condition = {
     token : '',
-    creator : '',
+    user_id : '',
     start_date: '',
     end_date: '',
     keyword: '',
@@ -30,7 +32,8 @@ export class PayListPage implements OnInit {
     public common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    public storage: StorageService, ) {
+    public storage: StorageService,
+    public datePipe: DatePipe, ) {
     }
 
   ngOnInit() {
@@ -41,7 +44,7 @@ export class PayListPage implements OnInit {
     const user = this.common.checkLogin();
     if (user) {
       this.condition.token = user.token;
-      this.condition.creator = user.rows.userId;
+      this.condition.user_id = user.rows.userId;
     }
     console.log('PayListPage');
     const params = this.storage.read<{
@@ -50,8 +53,8 @@ export class PayListPage implements OnInit {
       keyword: string
     }>('pay_search');
     if (params) {
-      this.condition.start_date = params.start_date || '' ;
-      this.condition.end_date = params.end_date || '';
+      this.condition.start_date = params.start_date || this.datePipe.transform(new Date(), 'yyyy-MM-01') ;
+      this.condition.end_date = params.end_date || this.datePipe.transform(new Date(), 'yyyy-MM-dd') ;
       this.condition.keyword = params.keyword || '';
     }
     this.load();

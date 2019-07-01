@@ -12,42 +12,25 @@
   <form #form="ngForm">
     <ion-item>
       <ion-label>箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</ion-label>
-      <ion-input style="text-align:right;" name="ctnno" [(ngModel)]="model.ctnno" type="text" placeholder="" readonly>
+      <ion-input style="text-align:right;" name="ctnno" [(ngModel)]="model.ctnno" type="text" placeholder="请输入箱号(可不填写)">
       </ion-input>
     </ion-item>
     <ion-item>
       <ion-label>提&nbsp;单&nbsp;号:</ion-label>
       <ion-input style="text-align:right;" name="ladingbillnumber" [(ngModel)]="model.ladingbillnumber" type="text"
-        placeholder="" readonly>
-      </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间:</ion-label>
-      <ion-input style="text-align:right;" name="create_time" [(ngModel)]="model.create_time" type="text" placeholder=""
-        readonly>
-      </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</ion-label>
-      <ion-input style="text-align:right;" name="stateDesc" [(ngModel)]="stateDesc" type="text" placeholder="" readonly>
-      </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>退回原因:</ion-label>
-      <ion-input style="text-align:right;" name="reason" [(ngModel)]="model.reason" type="text" placeholder="" readonly>
+        placeholder="请输入箱号(可不填写)">
       </ion-input>
     </ion-item>
     <div class="ion-padding">
       <div class="imgDiv">
-        <img *ngIf="model.state==1" [src]="addImage" (click)="upload()">
-        <img *ngIf="model.state!=1&&model.file_url" [src]="model.file_url" (click)="gotoImageDetail()">
-        <img *ngIf="model.state!=1&&(!model.file_url)" src="assets/image/noImage.jpg">
+        <img *ngIf="!model.file_url" [src]="addImage" (click)="upload()">
+        <img *ngIf="model.file_url" [src]="model.file_url" (click)="gotoImageDetail()">
       </div>
     </div>
     <input id="imageUpload2" #imageUpload2 type="file" accept="image/*" style="display: none"
       (change)="imageUpload(imageUpload2)" />
 
-    <ion-button *ngIf="model.state==1" color="primary" expand="block" class="ion-margin-top" (click)="submit()">重新提交
+    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交
     </ion-button>
   </form>
 

@@ -37,17 +37,18 @@ export class OrderDetailPage implements OnInit {
     state: 0,
     reason: '',
   };
-  addImage = 'assets/image/addImage.jpg';
+  addImage = 'assets/image/addImage.png';
   stateDesc = '';
   UPLOAD_URL = environment.UPLOAD_URL;
   @ViewChild('form') form: NgForm;
   user;
+  type;
   options: CameraOptions = {
     destinationType: this.camera.DestinationType.FILE_URI,
     sourceType: this.camera.PictureSourceType.CAMERA,
     allowEdit: false,
     mediaType: this.camera.MediaType.PICTURE,
-    saveToPhotoAlbum: false
+    saveToPhotoAlbum: false,
   };
 
   constructor(private http: HttpService,
@@ -73,6 +74,7 @@ export class OrderDetailPage implements OnInit {
     this.condition.token = this.user.token;
     this.activeRoute.queryParams.subscribe((params: Params) => {
       this.condition.id = params['id'] || '' ;
+      this.type = params['type'] || '' ;
       this.load();
     });
   }
@@ -85,11 +87,9 @@ export class OrderDetailPage implements OnInit {
       if (this.common.isSuccess(r.code)) {
         this.model = r.rows;
         this.stateDesc = this.common.getStatusDesc(this.model.state);
-        if (this.model.state == 1) {
-          this.model.file_id = '';
-          this.model.file_url = '';
-          this.model.file_name = '';
-        }
+        this.model.file_id = '';
+        this.model.file_url = '';
+        this.model.file_name = '';
       } else {
         this.common.errorSync(`获取订单详情失败{${r.resultNode}}`);
       }
@@ -105,24 +105,34 @@ export class OrderDetailPage implements OnInit {
     }
     if (this.form.valid) {
       const model = {
-        creator: this.user.rows.userId,
+        id: this.condition.id,
+        user_id: this.user.rows.userId,
+        user_name: this.user.rows.userName,
         ladingBillNumber: this.model.ladingbillnumber,
         ctnNo: this.model.ctnno,
         file_id: this.model.file_id,
+        file_url: this.model.file_url,
+        file_name: this.model.file_name,
         token: this.user.token
       };
       await this.common.showLoading();
-      this.http.post('/request/create_order', model).subscribe(res => {
+      let url = '';
+      if (this.type == 1) {
+        url = '/request/re_send_order';
+      } else if (this.type == 2) {
+        url = '/request/change_order';
+      }
+      this.http.post(url, model).subscribe(res => {
         this.common.hideLoading();
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
           this.common.success();
           this.nav.pop();
         } else {
-          this.common.errorSync(`重新提交订单错误{${r.resultNode}}`);
+          this.common.errorSync(`{${r.resultNode}}`);
         }
       }, err => {
-        this.common.errorSync(`重新提交订单错误{${err.message}}`);
+        this.common.errorSync(`{${err.message}}`);
       });
     } else {
       this.common.errorSync('请完整填写信息');
@@ -208,15 +218,7 @@ export class OrderDetailPage implements OnInit {
 
   gotoImageDetail() {
     this.storage.write('order_image', this.model.file_url);
-    let nodelete = 0;
-    if (this.model.state == 1) {
-      nodelete = 1;
-    }
-    this.router.navigate(['/image-detail'], {
-      queryParams: {
-        nodelete : nodelete
-      }
-    });
+    this.router.navigate(['/image-detail']);
   }
 
   setSafe(url) {

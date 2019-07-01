@@ -20,14 +20,12 @@
     </ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>状态</ion-label>
-    <ion-select name="state" [(ngModel)]="model.state" placeholder="请选择状态" okText="确定" cancelText="取消">
-      <ion-select-option value="-1">全部</ion-select-option>
-      <ion-select-option value="0">未审核</ion-select-option>
-      <ion-select-option value="1">退回</ion-select-option>
-      <ion-select-option value="2">审核通过</ion-select-option>
-      <ion-select-option value="3">已发送</ion-select-option>
-    </ion-select>
+    <ion-label>未发送：</ion-label>
+    <ion-toggle [(ngModel)]="nosend"></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label>未发送：</ion-label>
+    <ion-toggle [(ngModel)]="send"></ion-toggle>
   </ion-item>
 
   <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">搜索</ion-button>

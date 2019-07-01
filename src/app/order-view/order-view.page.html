@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>{{model.ladingbillnumber}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="ion-padding">
+  
+    <form #form="ngForm">
+      <ion-item>
+        <ion-label>箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</ion-label>
+        <ion-input style="text-align:right;" name="ctnno" [(ngModel)]="model.ctnno" type="text" placeholder="请输入箱号(可不填写)">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>提&nbsp;单&nbsp;号:</ion-label>
+        <ion-input style="text-align:right;" name="ladingbillnumber" [(ngModel)]="model.ladingbillnumber" type="text"
+          placeholder="请输入箱号(可不填写)">
+        </ion-input>
+      </ion-item>
+      <div class="ion-padding">
+        <div class="imgDiv">
+          <img *ngIf="model.file_url" [src]="model.file_url" (click)="gotoImageDetail()">
+        </div>
+      </div>
+    </form>
+  
+  </ion-content>

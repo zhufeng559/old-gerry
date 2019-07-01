@@ -85,12 +85,16 @@ export class CommonService {
   getStatusDesc(status) {
     switch (status) {
       case '0':
-        return '未审核';
+        return '建单';
       case '1':
-        return '退回';
+        return '审核不通过';
       case '2':
         return '审核通过';
       case '3':
+        return '作废';
+      case '4':
+        return '重新发送';
+      case '5':
         return '已发送';
     }
   }

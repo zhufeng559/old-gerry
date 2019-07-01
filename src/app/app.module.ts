@@ -14,11 +14,16 @@ import { HttpService } from '../service/common/http.service';
 import { StorageService } from '../service/common/storage.service';
 import { Camera } from '@ionic-native/camera/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { IonicConfig } from '@ionic/core';
+
+const config: IonicConfig = {
+  backButtonText: '',
+};
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [BrowserModule, IonicModule.forRoot(config), AppRoutingModule, HttpClientModule, FormsModule],
   providers: [
     StatusBar,
     SplashScreen,

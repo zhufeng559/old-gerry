@@ -5,11 +5,13 @@ import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StorageService } from '../../service/common/storage.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-order-history',
   templateUrl: './order-history.page.html',
   styleUrls: ['./order-history.page.scss'],
+  providers: [DatePipe]
 })
 export class OrderHistoryPage implements OnInit {
 
@@ -19,26 +21,30 @@ export class OrderHistoryPage implements OnInit {
     create_time: '',
     reason: '',
     keyword: '',
-    creator: '',
+    user_id: '',
     state: '-1',
     pages: 1,
     size: 10
   };
   total: number;
+  time: Date;
+  interval;
+  user;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   constructor(private http: HttpService,
     public common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    public storage: StorageService ) {
+    public storage: StorageService,
+    public datePipe: DatePipe ) {
     }
 
   ngOnInit() {
-    const user = this.common.checkLogin();
-    if (user) {
-      this.condition.token = user.token;
-      this.condition.creator = user.rows.userId;
+    this.user = this.common.checkLogin();
+    if (this.user) {
+      this.condition.token = this.user.token;
+      this.condition.user_id = this.user.rows.userId;
     }
   }
 
@@ -63,6 +69,9 @@ export class OrderHistoryPage implements OnInit {
     this.condition.state = '-1';
     this.condition.keyword = '';
     this.storage.remove('order_search');
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 
   async load() {
@@ -72,6 +81,8 @@ export class OrderHistoryPage implements OnInit {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.total = r.recordsTotal;
+        this.time = new Date(r.time);
+        this.countTime();
         if (this.condition.pages === 1) {
           this.list = r.rows.list;
         } else if (r.rows.list) {
@@ -127,5 +138,61 @@ export class OrderHistoryPage implements OnInit {
 
   back() {
     this.router.navigate(['/tabs/order']);
+  }
+
+  async cancelOrder(item) {
+    await this.common.showLoading();
+    this.http.post('/request/cancel_order' ,
+    {
+      user_id: this.condition.user_id,
+      id: item.id,
+      token: this.user.token
+    }).toPromise().then(res => {
+      this.common.hideLoading();
+      const r = res as any;
+      if (this.common.isSuccess(r.code)) {
+        this.common.success();
+      } else {
+        this.common.errorSync(`取消订单失败{${r.resultNode}}`);
+      }
+    }, err => {
+      this.common.requestError(err);
+    });
+  }
+
+  async reSendOrder(item) {
+    this.router.navigate(['/order-detail'], {
+      queryParams: {
+        id: item.id,
+        type: 1
+      }
+    });
+  }
+
+  async changeOrder(item) {
+    this.router.navigate(['/order-detail'], {
+      queryParams: {
+        id: item.id,
+        type: 2
+      }
+    });
+  }
+
+  countTime() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+    this.interval = setInterval(() => {
+      const time1 = this.time.getTime();
+      this.list.forEach((item) => {
+        const time2 = new Date(item.create_time).getTime();
+        if (time1 > time2 && (time1 - time2) / 1000 <= 1000) {
+          const seconds = (time1 - time2) / 1000;
+          console.log(seconds);
+          item.left = seconds;
+        }
+      });
+      this.time = new Date(time1 - 1000);
+    }, 1000);
   }
 }

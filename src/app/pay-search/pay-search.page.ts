@@ -15,8 +15,8 @@ import { StorageService } from '../../service/common/storage.service';
 export class PaySearchPage implements OnInit {
 
   model = {
-    start_date: '',
-    end_date: '',
+    start_date: this.datePipe.transform(new Date(), 'yyyy-MM-01'),
+    end_date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
     keyword: '',
   };
 

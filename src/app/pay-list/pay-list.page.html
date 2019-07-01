@@ -5,7 +5,7 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>账单</ion-title>
+    <ion-title class="ion-text-center">账单</ion-title>
     <ion-chip color="light" slot="end" (click)="gotoPaySearch()">
       <ion-icon name="search"></ion-icon>
       <ion-label>搜索</ion-label>
@@ -26,13 +26,20 @@
     <h5 style="text-align: center;">本月合计</h5>
     <h2 style="text-align: center;">￥{{total}}元</h2>
 
-    <ion-item *ngFor="let item of list" lines="none">
-      <ion-label>
-        <h4>箱&nbsp;&nbsp;&nbsp;号:{{item?.ctnno}}<span style="float: right;color: red">{{item?.price}}元</span></h4>
-        <h4>提单号:{{item?.ladingbillnumber}}</h4>
-        <p>时&nbsp;&nbsp;&nbsp;间:{{item?.send_time | date:'yyyy-MM-dd HH:mm:ss'}}</p>
-      </ion-label>
-    </ion-item>
+    <ion-item-group *ngFor="let item of list">
+      <ion-item-divider>
+        <ion-label>订单编号:{{item?.pack_no}}</ion-label>
+      </ion-item-divider>
+      <ion-item lines="none">
+        <ion-avatar>
+          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+        </ion-avatar>
+        <ion-label class="ion-padding-start">
+          <p>提单号:{{item?.ctnno}}<span class="ion-float-end">{{item.fee}}元</span></p>
+          <ion-note slot="end">{{item?.create_time | date:'MM-dd HH:mm'}}</ion-note>
+        </ion-label>
+      </ion-item>
+    </ion-item-group>
 
     <img class="ion-margin-top" src="assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
     <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无数据</p>
