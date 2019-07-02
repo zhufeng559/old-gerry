@@ -53,6 +53,22 @@ export class MyPage implements OnInit {
     }
 
   ngOnInit() {
+    this.user = this.common.checkLogin();
+    if (this.user) {
+      this.condition.token = this.user.token;
+      this.condition.user_id = this.user.rows.userId;
+    }
+    this.http.post('/request/user_detail', {
+      user_id: this.user.rows.userId,
+      token: this.user.token
+    }).toPromise().then(res => {
+      const r = res as any;
+      if (this.common.isSuccess(r.code)) {
+        this.file_url = r.rows.file_url;
+        this.phone = r.rows.phone;
+      }
+    });
+    this.load();
   }
 
   ionViewDidEnter () {
@@ -104,7 +120,7 @@ export class MyPage implements OnInit {
   }
 
   gotoChangePassword() {
-    this.router.navigate(['/change-password'], {
+    this.router.navigate(['/change-password2'], {
       queryParams: {
         phone: this.user.rows.phone,
       }

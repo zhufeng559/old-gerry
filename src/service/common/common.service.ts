@@ -46,7 +46,7 @@ export class CommonService {
     this.loader = await this.loading.create({
       spinner: 'circles',
       message: msg,
-      duration: 6000
+      duration: 5000
     });
     await this.loader.present();
   }

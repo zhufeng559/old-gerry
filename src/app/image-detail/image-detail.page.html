@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="back()">
+        <ion-icon mode="ios" name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title> 图片详情</ion-title>
     <ion-buttons slot="end">
@@ -14,6 +16,12 @@
 
 <ion-content>
 
-  <img *ngIf="img" [src]='img'>
+  <ion-content [forceOverscroll]="false" fullscreen="true">
+    <ion-slides [options]="slideOpts">
+      <ion-slide>
+        <div class="swiper-zoom-container"><img [src]="img" height="100vh" /></div>
+      </ion-slide>
+    </ion-slides>
+  </ion-content>
 
 </ion-content>

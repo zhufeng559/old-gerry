@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { CommonService } from '../../service/common/common.service';
 import { HttpService } from '../../service/common/http.service';
 import { NgForm } from '@angular/forms';
-import { IonButton } from '@ionic/angular';
+import { IonButton, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-change-password',
@@ -24,11 +24,13 @@ export class ChangePasswordPage implements OnInit {
   eye = true;
   @ViewChild('btnCode') btnCode: IonButton;
   @ViewChild('form') form: NgForm;
+  timer;
 
   constructor(private http: HttpService,
     private common: CommonService,
     public router: Router,
-    public activeRoute: ActivatedRoute, ) {
+    public activeRoute: ActivatedRoute,
+    public nav: NavController) {
   }
 
   ngOnInit() {
@@ -38,6 +40,16 @@ export class ChangePasswordPage implements OnInit {
     this.activeRoute.queryParams.subscribe((params: Params) => {
       this.model.phone = params['phone'] ;
     });
+  }
+
+  ionViewDidLeave() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  }
+
+  back() {
+    this.nav.pop();
   }
 
   async submit() {
@@ -100,7 +112,10 @@ export class ChangePasswordPage implements OnInit {
       this.text = `重新发送(${this.countdown})`;
       this.countdown--;
     }
-    setTimeout(() => {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    this.timer = setTimeout(() => {
       this.setTime();
     }, 1000);
   }

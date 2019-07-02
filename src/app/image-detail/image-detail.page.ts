@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
-
+import { Events } from '@ionic/angular';
 
 @Component({
   selector: 'app-image-detail',
@@ -16,13 +16,18 @@ export class ImageDetailPage implements OnInit {
 
   img = '';
   nodelete = false;
+  slideOpts = {
+    centeredSlides: 'true'
+  };
 
   constructor(private http: HttpService,
     private common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
     public alertCtrl: AlertController,
-    public storage: StorageService ) {
+    public storage: StorageService,
+    public nav: NavController,
+    public events: Events ) {
   }
 
   ngOnInit() {
@@ -36,9 +41,13 @@ export class ImageDetailPage implements OnInit {
     });
   }
 
+  back() {
+    this.nav.pop();
+  }
+
   delete() {
-    this.storage.write('order_image', '');
     this.img = '';
-    this.router.navigate(['/tabs/order']);
+    this.events.publish('deleteImg');
+    this.nav.pop();
   }
 }

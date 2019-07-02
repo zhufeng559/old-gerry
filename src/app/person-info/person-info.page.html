@@ -2,7 +2,7 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button (click)="back()">
-        <ion-icon name="arrow-back"></ion-icon>
+        <ion-icon mode="ios" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>个人信息</ion-title>
@@ -18,7 +18,7 @@
         <img [src]="model?.file_url">
       </ion-avatar>
       <ion-avatar style="margin:0 auto !important;" *ngIf="!model?.file_url">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+        <img src="assets/image/default.jpg">
       </ion-avatar>
     </ion-item>
     <ion-item>
@@ -48,6 +48,18 @@
       <ion-label>身份证号</ion-label>
       <ion-input style="text-align:right;" name="id_number" [(ngModel)]="model.id_number" type="text"
         placeholder="请输入身份证号">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>车牌号</ion-label>
+      <ion-input style="text-align:right;" name="id_number" [(ngModel)]="model.LicensePlate" type="text"
+        placeholder="请输入车牌号">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>行驶证号</ion-label>
+      <ion-input style="text-align:right;" name="id_number" [(ngModel)]="model.DrivingPermit_id" type="text"
+        placeholder="请输入行驶证号">
       </ion-input>
     </ion-item>
 

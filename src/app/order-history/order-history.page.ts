@@ -61,33 +61,32 @@ export class OrderHistoryPage implements OnInit {
       this.condition.state = params.state || '-1';
       this.condition.keyword = params.keyword || '';
     }
-    this.load();
+    this.load(true);
   }
 
   ionViewDidLeave() {
-    this.condition.create_time = '' ;
-    this.condition.state = '-1';
-    this.condition.keyword = '';
-    this.storage.remove('order_search');
     if (this.interval) {
       clearInterval(this.interval);
     }
   }
 
-  async load() {
-    this.list = new Array();
+  async load(refreash = false) {
+    if (refreash) {
+      this.list = new Array();
+      this.condition.pages = 1;
+    }
     return this.http.post('/request/get_order_list' , this.condition).toPromise().then(res => {
       this.common.hideLoading();
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.total = r.recordsTotal;
         this.time = new Date(r.time);
-        this.countTime();
         if (this.condition.pages === 1) {
           this.list = r.rows.list;
         } else if (r.rows.list) {
           this.list = this.list.concat(r.rows.list);
         }
+        this.countTime();
         if (this.condition.pages * this.condition.size >= this.total) {
           this.infiniteScroll.disabled = true;
         } else {
@@ -105,7 +104,7 @@ export class OrderHistoryPage implements OnInit {
     setTimeout(() => {
       this.condition.pages = 1;
       this.condition.size = 10;
-      this.load().then(() => {
+      this.load(true).then(() => {
         event.target.complete();
       });
     }, 300);
@@ -129,7 +128,7 @@ export class OrderHistoryPage implements OnInit {
   }
 
   gotoOrderDetail(id) {
-    this.router.navigate(['/order-detail'], {
+    this.router.navigate(['/order-view'], {
       queryParams: {
         id: id
       }
@@ -186,8 +185,10 @@ export class OrderHistoryPage implements OnInit {
       const time1 = this.time.getTime();
       this.list.forEach((item) => {
         const time2 = new Date(item.create_time).getTime();
-        if (time1 > time2 && (time1 - time2) / 1000 <= 1000) {
+        if (time1 >= time2 && (time1 - time2) / 1000 <= 120) {
           const seconds = (time1 - time2) / 1000;
+          console.log(this.time);
+          console.log(item.create_time);
           console.log(seconds);
           item.left = seconds;
         }

@@ -3,6 +3,7 @@ import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
 import { StorageService } from '../../service/common/storage.service';
 
@@ -27,13 +28,14 @@ export class OrderSearchPage implements OnInit {
     public router: Router,
     public activeRoute: ActivatedRoute,
     public datePipe: DatePipe,
-    public storage: StorageService ) {
+    public storage: StorageService,
+    public nav: NavController ) {
     }
 
   ngOnInit() {
   }
 
-  ionViewDidEnter () {
+  async ionViewDidEnter () {
     console.log('OrderSearchPage');
     const params = this.storage.read<{
       create_time: string,
@@ -42,10 +44,29 @@ export class OrderSearchPage implements OnInit {
     }>('order_search');
     if (params) {
       this.model = params;
+      if (this.model.state == '1') {
+        this.nosend = true;
+        this.send = false;
+      }
+      if (this.model.state == '2') {
+        this.nosend = false;
+        this.send = true;
+      }
+      if (this.model.state == '-1') {
+        this.nosend = true;
+        this.send = true;
+      }
     }
   }
 
   submit() {
+    if (this.nosend && this.send) {
+      this.model.state = '-1';
+    } else if (this.nosend) {
+      this.model.state = '1';
+    } else if (this.send) {
+      this.model.state = '2';
+    }
     this.storage.write('order_search', {
       state: this.model.state,
       keyword: this.model.keyword,
@@ -53,5 +74,9 @@ export class OrderSearchPage implements OnInit {
     });
 
     this.router.navigate(['/order-history']);
+  }
+
+  back() {
+    this.nav.pop();
   }
 }

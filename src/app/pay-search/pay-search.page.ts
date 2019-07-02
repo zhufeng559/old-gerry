@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { StorageService } from '../../service/common/storage.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pay-search',
@@ -25,7 +26,8 @@ export class PaySearchPage implements OnInit {
     public router: Router,
     public activeRoute: ActivatedRoute,
     public datePipe: DatePipe,
-    public storage: StorageService ) {
+    public storage: StorageService,
+    public nav: NavController ) {
     }
 
   ngOnInit() {
@@ -52,4 +54,7 @@ export class PaySearchPage implements OnInit {
     this.router.navigate(['/pay-list']);
   }
 
+  back() {
+    this.nav.pop();
+  }
 }

@@ -39,7 +39,8 @@ export class OrderPage implements OnInit {
     sourceType: this.camera.PictureSourceType.CAMERA,
     allowEdit: false,
     mediaType: this.camera.MediaType.PICTURE,
-    saveToPhotoAlbum: false
+    saveToPhotoAlbum: false,
+    quality: 50,
   };
 
   constructor(private http: HttpService,
@@ -56,6 +57,12 @@ export class OrderPage implements OnInit {
     public datePipe: DatePipe, ) {
       events.subscribe('new', (file) => {
         this.type = '1';
+      });
+
+      events.subscribe('deleteImg', () => {
+        this.model.file_url = '';
+        this.model.file_id = '';
+        this.model.file_name = '';
       });
     }
 

@@ -24,6 +24,7 @@ export class ChangePassword2Page implements OnInit {
   eye = true;
   @ViewChild('btnCode') btnCode: IonButton;
   @ViewChild('form') form: NgForm;
+  timer;
 
   constructor(private http: HttpService,
     private common: CommonService,
@@ -40,6 +41,12 @@ export class ChangePassword2Page implements OnInit {
     });
   }
 
+  ionViewDidLeave() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  }
+
   async submit() {
     if (!this.model.phone) {
       this.common.errorSync('请完整填写信息');
@@ -51,8 +58,8 @@ export class ChangePassword2Page implements OnInit {
         this.common.hideLoading();
         const r = res as any;
         if (this.common.isSuccess(r.code)) {
-          this.common.success('修改成功,正在为您跳转至登录页...').then(() => {
-            this.router.navigate(['/login']);
+          this.common.success('修改成功').then(() => {
+            this.router.navigate(['/tabs/my']);
           });
         } else {
           this.common.errorSync(`修改密码错误{${r.resultNode}}`);
@@ -100,9 +107,16 @@ export class ChangePassword2Page implements OnInit {
       this.text = `重新发送(${this.countdown})`;
       this.countdown--;
     }
-    setTimeout(() => {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    this.timer = setTimeout(() => {
       this.setTime();
     }, 1000);
+  }
+
+  back() {
+    this.router.navigate(['/tabs/my']);
   }
 
 }

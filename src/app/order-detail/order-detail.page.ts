@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
-import { ActionSheetController, NavController } from '@ionic/angular';
+import { ActionSheetController, NavController, Events } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
@@ -34,7 +34,8 @@ export class OrderDetailPage implements OnInit {
     file_name: '',
     id: 0,
     ladingbillnumber: '',
-    state: 0,
+    bill_no: '',
+    app_state: '',
     reason: '',
   };
   addImage = 'assets/image/addImage.png';
@@ -49,6 +50,7 @@ export class OrderDetailPage implements OnInit {
     allowEdit: false,
     mediaType: this.camera.MediaType.PICTURE,
     saveToPhotoAlbum: false,
+    quality: 50,
   };
 
   constructor(private http: HttpService,
@@ -61,7 +63,13 @@ export class OrderDetailPage implements OnInit {
     private camera: Camera,
     private transfer: FileTransfer,
     private sanitizer: DomSanitizer,
-    public datePipe: DatePipe, ) {
+    public datePipe: DatePipe,
+    public events: Events ) {
+      events.subscribe('deleteImg', () => {
+        this.model.file_url = '';
+        this.model.file_id = '';
+        this.model.file_name = '';
+      });
   }
 
   fileTransfer: FileTransferObject = this.transfer.create();
@@ -86,7 +94,7 @@ export class OrderDetailPage implements OnInit {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.model = r.rows;
-        this.stateDesc = this.common.getStatusDesc(this.model.state);
+        this.stateDesc = this.common.getStatusDesc(this.model.app_state);
         this.model.file_id = '';
         this.model.file_url = '';
         this.model.file_name = '';
@@ -169,26 +177,24 @@ export class OrderDetailPage implements OnInit {
   }
 
   async upload() {
-    if (this.model.state == 1) {
-      const actionSheet = await this.actionSheetCtrl.create({
-        header: '请选择',
-        buttons: [{
-            icon: 'camera',
-            text: '打开相机',
-            handler: () => {
-              this.takePhoto();
-            }
-          }, {
-            icon: 'image',
-            text: '打开相册',
-            handler: () => {
-              document.getElementById('imageUpload2').click();
-            }
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: '请选择',
+      buttons: [{
+          icon: 'camera',
+          text: '打开相机',
+          handler: () => {
+            this.takePhoto();
           }
-        ]
-      });
-      await actionSheet.present();
-    }
+        }, {
+          icon: 'image',
+          text: '打开相册',
+          handler: () => {
+            document.getElementById('imageUpload2').click();
+          }
+        }
+      ]
+    });
+    await actionSheet.present();
   }
 
   imageUpload(element: any) {
@@ -223,5 +229,9 @@ export class OrderDetailPage implements OnInit {
 
   setSafe(url) {
     return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+
+  back() {
+    this.nav.pop();
   }
 }

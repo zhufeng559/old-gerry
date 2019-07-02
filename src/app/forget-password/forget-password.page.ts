@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-forget-password',
@@ -10,7 +11,8 @@ export class ForgetPasswordPage implements OnInit {
 
   phone = '';
 
-  constructor(public router: Router, ) { }
+  constructor(public router: Router,
+    public nav: NavController ) { }
 
   ngOnInit() {
   }
@@ -21,5 +23,9 @@ export class ForgetPasswordPage implements OnInit {
         phone: this.phone
       }
     });
+  }
+
+  back() {
+    this.nav.pop();
   }
 }

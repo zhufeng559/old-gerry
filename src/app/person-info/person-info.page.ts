@@ -27,10 +27,12 @@ export class PersonInfoPage implements OnInit {
     birthdate: '',
     id_number: '',
     identity_card: '',
-    userId: '',
+    user_id: '',
     token: '',
     file_id: '',
     file_url: '',
+    LicensePlate: '',
+    DrivingPermit_id: '',
   };
   @ViewChild('form') form: NgForm;
   user;
@@ -41,7 +43,8 @@ export class PersonInfoPage implements OnInit {
     sourceType: this.camera.PictureSourceType.CAMERA,
     allowEdit: false,
     mediaType: this.camera.MediaType.PICTURE,
-    saveToPhotoAlbum: false
+    saveToPhotoAlbum: false,
+    quality: 50,
   };
 
   constructor(private http: HttpService,
@@ -60,16 +63,18 @@ export class PersonInfoPage implements OnInit {
   ngOnInit() {
     this.user = this.common.checkLogin();
     this.http.post('/request/user_detail', {
-      userId: this.user.rows.userId,
+      user_id: this.user.rows.userId,
       token: this.user.token
     }).toPromise().then(res => {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.model = r.rows;
-        this.model.userId = this.user.userId;
+        this.model.user_id = this.user.rows.userId;
         this.model.token = this.user.token;
         this.model.id_number = this.model.identity_card;
         this.model.nickName = this.model.nickname;
+        this.model.LicensePlate = this.model.LicensePlate || '';
+        this.model.DrivingPermit_id = this.model.DrivingPermit_id || '';
       }
     });
   }

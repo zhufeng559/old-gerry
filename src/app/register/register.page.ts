@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StorageService } from '../../service/common/storage.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -27,12 +28,14 @@ export class RegisterPage implements OnInit {
   @ViewChild('form') form: NgForm;
   agree = false;
   eye = true;
+  timer;
 
   constructor(private http: HttpService,
     private common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    public storage: StorageService ) {
+    public storage: StorageService,
+    public nav: NavController ) {
     }
 
   ngOnInit() {
@@ -43,6 +46,16 @@ export class RegisterPage implements OnInit {
     if (agree == 1) {
       this.agree = true;
     }
+  }
+
+  ionViewDidLeave() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  }
+
+  back() {
+    this.nav.pop();
   }
 
   async submit() {
@@ -104,7 +117,10 @@ export class RegisterPage implements OnInit {
       this.text = `重新发送(${this.countdown})`;
       this.countdown--;
     }
-    setTimeout(() => {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    this.timer = setTimeout(() => {
       this.setTime();
     }, 1000);
   }

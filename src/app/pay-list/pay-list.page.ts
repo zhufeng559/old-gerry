@@ -57,7 +57,7 @@ export class PayListPage implements OnInit {
       this.condition.end_date = params.end_date || this.datePipe.transform(new Date(), 'yyyy-MM-dd') ;
       this.condition.keyword = params.keyword || '';
     }
-    this.load();
+    this.load(true);
   }
 
   ionViewDidLeave() {
@@ -67,8 +67,12 @@ export class PayListPage implements OnInit {
     this.storage.remove('pay_search');
   }
 
-  async load() {
+  async load(refreash = false) {
     this.common.showLoading();
+    if (refreash) {
+      this.list = new Array();
+      this.condition.pages = 1;
+    }
     return this.http.post('/request/get_bill_list' , this.condition).toPromise().then(res => {
       this.common.hideLoading();
       const r = res as any;
@@ -96,7 +100,7 @@ export class PayListPage implements OnInit {
     setTimeout(() => {
       this.condition.pages = 1;
       this.condition.size = 10;
-      this.load().then(() => {
+      this.load(true).then(() => {
         event.target.complete();
       });
     }, 300);

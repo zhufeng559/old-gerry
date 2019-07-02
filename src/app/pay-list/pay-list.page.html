@@ -2,10 +2,10 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button (click)="back()">
-        <ion-icon name="arrow-back"></ion-icon>
+        <ion-icon mode="ios" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">账单</ion-title>
+    <ion-title>账单</ion-title>
     <ion-chip color="light" slot="end" (click)="gotoPaySearch()">
       <ion-icon name="search"></ion-icon>
       <ion-label>搜索</ion-label>
@@ -32,7 +32,7 @@
       </ion-item-divider>
       <ion-item lines="none">
         <ion-avatar>
-          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+          <img src="assets/image/dan.jpg">
         </ion-avatar>
         <ion-label class="ion-padding-start">
           <p>提单号:{{item?.ctnno}}<span class="ion-float-end">{{item.fee}}元</span></p>

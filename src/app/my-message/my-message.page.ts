@@ -62,11 +62,7 @@ export class MyMessagePage implements OnInit {
   }
 
   getContent(item) {
-    let str = '';
-    if (item.state == 1){
-      str = `退回原因:${item.reason},`;
-    }
-    return `箱号为${item.ctnno},提单号为${item.ladingbillnumber}的订单${this.common.getStatusDesc(item.state)},${str}点击查看详情`;
+    return `箱号为${item.ctnno}的订单状态变更为${this.common.getStatusDesc(item.app_state)}，原因:${item.reason}，点击查看详情。`;
   }
 
   getReadDesc(item) {
@@ -86,7 +82,7 @@ export class MyMessagePage implements OnInit {
       this.common.hideLoading();
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
-        this.router.navigate(['/order-detail'], {
+        this.router.navigate(['/order-view'], {
           queryParams: {
             id: id
           }

@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="back()">
+        <ion-icon mode="ios" name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>{{model.ladingbillnumber}}</ion-title>
+    <ion-title>{{model.bill_no}}</ion-title>
   </ion-toolbar>
 </ion-header>
 

@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
   selector: 'app-order-view',
   templateUrl: './order-view.page.html',
   styleUrls: ['./order-view.page.scss'],
+  providers: [DatePipe]
 })
 export class OrderViewPage implements OnInit {
 
@@ -34,6 +35,8 @@ export class OrderViewPage implements OnInit {
     ladingbillnumber: '',
     state: 0,
     reason: '',
+    bill_no: '',
+    app_state: '',
   };
   addImage = 'assets/image/addImage.png';
   stateDesc = '';
@@ -73,10 +76,7 @@ export class OrderViewPage implements OnInit {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.model = r.rows;
-        this.stateDesc = this.common.getStatusDesc(this.model.state);
-        this.model.file_id = '';
-        this.model.file_url = '';
-        this.model.file_name = '';
+        this.stateDesc = this.common.getStatusDesc(this.model.app_state);
       } else {
         this.common.errorSync(`获取订单详情失败{${r.resultNode}}`);
       }
@@ -92,5 +92,9 @@ export class OrderViewPage implements OnInit {
 
   setSafe(url) {
     return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+
+  back() {
+    this.nav.pop();
   }
 }

@@ -11,7 +11,8 @@ import { StorageService } from '../../service/common/storage.service';
 export class AgreementPage implements OnInit {
 
   constructor(public router: Router,
-    public storage: StorageService ) { }
+    public storage: StorageService,
+    public nav: NavController ) { }
 
   ngOnInit() {
   }
@@ -19,5 +20,9 @@ export class AgreementPage implements OnInit {
   submit () {
     this.storage.write('agree', 1);
     this.router.navigate(['/register']);
+  }
+
+  back() {
+    this.nav.pop();
   }
 }
