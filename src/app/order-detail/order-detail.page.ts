@@ -75,9 +75,6 @@ export class OrderDetailPage implements OnInit {
   fileTransfer: FileTransferObject = this.transfer.create();
 
   ngOnInit() {
-  }
-
-  ionViewDidEnter () {
     this.user = this.common.checkLogin();
     this.condition.token = this.user.token;
     this.activeRoute.queryParams.subscribe((params: Params) => {
@@ -85,6 +82,9 @@ export class OrderDetailPage implements OnInit {
       this.type = params['type'] || '' ;
       this.load();
     });
+  }
+
+  ionViewDidEnter () {
   }
 
   async load() {
@@ -95,9 +95,6 @@ export class OrderDetailPage implements OnInit {
       if (this.common.isSuccess(r.code)) {
         this.model = r.rows;
         this.stateDesc = this.common.getStatusDesc(this.model.app_state);
-        this.model.file_id = '';
-        this.model.file_url = '';
-        this.model.file_name = '';
       } else {
         this.common.errorSync(`获取订单详情失败{${r.resultNode}}`);
       }
@@ -224,7 +221,11 @@ export class OrderDetailPage implements OnInit {
 
   gotoImageDetail() {
     this.storage.write('order_image', this.model.file_url);
-    this.router.navigate(['/image-detail']);
+    this.router.navigate(['/image-detail'], {
+      queryParams: {
+        nodelete : 1
+      }
+    });
   }
 
   setSafe(url) {

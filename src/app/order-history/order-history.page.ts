@@ -27,7 +27,6 @@ export class OrderHistoryPage implements OnInit {
     size: 10
   };
   total: number;
-  time: Date;
   interval;
   user;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
@@ -80,7 +79,6 @@ export class OrderHistoryPage implements OnInit {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.total = r.recordsTotal;
-        this.time = new Date(r.time);
         if (this.condition.pages === 1) {
           this.list = r.rows.list;
         } else if (r.rows.list) {
@@ -151,6 +149,7 @@ export class OrderHistoryPage implements OnInit {
       const r = res as any;
       if (this.common.isSuccess(r.code)) {
         this.common.success();
+        this.load(true);
       } else {
         this.common.errorSync(`取消订单失败{${r.resultNode}}`);
       }
@@ -182,18 +181,14 @@ export class OrderHistoryPage implements OnInit {
       clearInterval(this.interval);
     }
     this.interval = setInterval(() => {
-      const time1 = this.time.getTime();
+      const time1 = new Date().getTime();
       this.list.forEach((item) => {
-        const time2 = new Date(item.create_time).getTime();
-        if (time1 >= time2 && (time1 - time2) / 1000 <= 120) {
-          const seconds = (time1 - time2) / 1000;
-          console.log(this.time);
-          console.log(item.create_time);
-          console.log(seconds);
+        const time2 = new Date(item.create_time).getTime() + 120 * 1000;
+        if (time2 >= time1) {
+          const seconds = ((time2 - time1) / 1000).toFixed(0);
           item.left = seconds;
         }
       });
-      this.time = new Date(time1 - 1000);
     }, 1000);
   }
 }

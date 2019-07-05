@@ -21,10 +21,10 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-card *ngFor="let item of list" class="ion-padding-top">
+  <ion-card *ngFor="let item of list">
     <ion-item (click)="gotoOrderDetail(item.id)">
       <ion-label>订单编号:{{item?.bill_no}}</ion-label>
-      <ion-note slot="end" *ngIf="item?.left>0" style="color:red;">
+      <ion-note slot="end" *ngIf="item?.left>0&&item.state!=9" style="color:red;">
         {{item.left}}秒
       </ion-note>
     </ion-item>
