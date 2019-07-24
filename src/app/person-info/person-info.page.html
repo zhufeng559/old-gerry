@@ -52,18 +52,24 @@
     </ion-item>
     <ion-item>
       <ion-label>车牌号</ion-label>
-      <ion-input style="text-align:right;" name="id_number" [(ngModel)]="model.LicensePlate" type="text"
+      <ion-input style="text-align:right;" name="LicensePlate" [(ngModel)]="model.LicensePlate" type="text"
+        placeholder="请输入车牌号">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>挂牌</ion-label>
+      <ion-input style="text-align:right;" name="HangPlate" [(ngModel)]="model.HangPlate" type="text"
         placeholder="请输入车牌号">
       </ion-input>
     </ion-item>
     <ion-item>
       <ion-label>行驶证号</ion-label>
-      <ion-input style="text-align:right;" name="id_number" [(ngModel)]="model.DrivingPermit_id" type="text"
+      <ion-input style="text-align:right;" name="DrivingPermit_id" [(ngModel)]="model.DrivingPermit_id" type="text"
         placeholder="请输入行驶证号">
       </ion-input>
     </ion-item>
 
-    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>
+    <ion-button color="secondary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>
   </form>
 
   <input id="imageUpload3" #imageUpload3 type="file" accept="image/*" style="display: none"

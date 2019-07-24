@@ -1,12 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>首页</ion-title>
-    <ion-chip
-      color="light"
-      slot="end"
-      style="margin-right: 10%;width:150px;"
-      (click)="gotoSearchPage()"
-    >
+    <ion-chip color="light" slot="end" style="margin-right: 10%;width:150px;" (click)="gotoSearchPage()">
       <ion-icon name="search"></ion-icon>
       <ion-label>搜索</ion-label>
     </ion-chip>
@@ -16,7 +11,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="type">
+  <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="type" color="secondary">
     <ion-segment-button value="order">
       <ion-label>清单</ion-label>
     </ion-segment-button>
@@ -28,12 +23,8 @@
 
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="上拉刷新"
-      refreshingSpinner="circles"
-      refreshingText="加载中..."
-    >
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="上拉刷新" refreshingSpinner="circles"
+      refreshingText="加载中...">
     </ion-refresher-content>
   </ion-refresher>
 
@@ -42,11 +33,7 @@
       <ion-item-group *ngFor="let item of list1" class="ion-padding-top">
         <ion-item (click)="gotoOrderDetail(item.id)" lines="full">
           <ion-label class="billHead" style="color: #2b333e;">订单编号:{{ item?.bill_no }}</ion-label>
-          <ion-note
-            slot="end"
-            *ngIf="item?.left > 0 && item.state != 9"
-            style="color:red;"
-          >
+          <ion-note slot="end" *ngIf="item?.left > 0 && item.state != 9" style="color:red;">
             {{ item.left }}秒
           </ion-note>
         </ion-item>
@@ -63,46 +50,38 @@
         </ion-item>
         <ion-item lines="none">
           <ion-buttons slot="end">
-            <ion-button
-              fill="outline"
-              color="primary"
-              [disabled]="!(item.state == 0 && item?.left > 0)"
-              (click)="cancelOrder(item)"
-            >
-              取消
+            <ion-button *ngIf="!(item.state == 0 && item?.left > 0)" fill="outline" style="--border-radius:15px;padding:2px;" color="primary"
+              [disabled]="true" (click)="cancelOrder(item)">
+              &nbsp;取消&nbsp;
             </ion-button>
-            <ion-button
-              fill="outline"
-              color="primary"
-              [disabled]="!(item.state < 2 || item.state == 3)"
-              (click)="changeOrder(item)"
-            >
-              修改
+            <ion-button *ngIf="(item.state == 0 && item?.left > 0)" fill="outline" style="--border-radius:15px;padding:2px;" color="secondary"
+              [disabled]="!(item.state == 0 && item?.left > 0)" (click)="cancelOrder(item)">
+              &nbsp;取消&nbsp;
             </ion-button>
-            <ion-button
-              fill="outline"
-              color="primary"
-              *ngIf="!(item.state >= 4&&item.state<=8)"
-              (click)="reSendOrder(item)"
-            >
-              重新发送
+            <ion-button *ngIf="!(item.state < 2 || item.state == 3)" fill="outline" style="--border-radius:15px;padding:2px;" color="primary"
+              [disabled]="true" (click)="changeOrder(item)">
+              &nbsp;修改&nbsp;
+            </ion-button>
+            <ion-button *ngIf="(item.state < 2 || item.state == 3)" fill="outline" style="--border-radius:15px;padding:2px;" color="secondary"
+              (click)="changeOrder(item)">
+              &nbsp;修改&nbsp;
+            </ion-button>
+            <ion-button fill="outline" style="--border-radius:15px;padding:2px;" color="secondary"
+              *ngIf="(item.state >= 4&&item.state<=8)" (click)="reSendOrder(item)">
+              &nbsp;重新发送&nbsp;
             </ion-button>
           </ion-buttons>
         </ion-item>
       </ion-item-group>
+
+      <img class="ion-margin-top" src="assets/image/noOrder.png" *ngIf="list1.length==0">
     </div>
 
     <div *ngSwitchCase="'bill'">
-      <ion-item lines="none" class="ion-padding-top">
-        <span slot="end" style="font-size: 14px !important;color: #2b333e;"
-          >本月合计:￥{{ total2 }}元</span
-        >
-      </ion-item>
-      <ion-item-group *ngFor="let item of list2" class="ion-padding-buttom">
+      <p class="ion-text-end ion-padding-end" style="font-size: 14px !important;color: #2b333e;">本月合计:￥{{ total2 }}元</p>
+      <ion-item-group *ngFor="let item of list2" class="ion-padding-bottom">
         <ion-item lines="full">
-          <ion-label class="billHead" style="color: #2b333e;"
-            >订单编号:{{ item?.pack_no }}</ion-label
-          >
+          <ion-label class="billHead" style="color: #2b333e;">订单编号:{{ item?.pack_no }}</ion-label>
         </ion-item>
         <ion-item lines="none">
           <ion-avatar>
@@ -111,9 +90,7 @@
           <ion-label class="ion-padding-start">
             <p style="color: #2b333e;">
               提单号:{{ common.getInfo(item?.ctnno)
-              }}<span class="ion-float-end" style="color:red;"
-                >{{ item.fee }}元</span
-              >
+              }}<span class="ion-float-end" style="color:red;">{{ item.fee }}元</span>
             </p>
             <ion-note slot="end">{{
               item?.create_time | date: "MM-dd HH:mm"
@@ -121,14 +98,13 @@
           </ion-label>
         </ion-item>
       </ion-item-group>
+
+      <img class="ion-margin-top" src="assets/image/noOrder.png" *ngIf="list2.length==0">
     </div>
   </div>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="加载更多数据..."
-    >
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多数据...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

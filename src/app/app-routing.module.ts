@@ -11,10 +11,8 @@ const routes: Routes = [
   { path: 'change-password', loadChildren: './change-password/change-password.module#ChangePasswordPageModule' },
   { path: 'order', loadChildren: './order/order.module#OrderPageModule' },
   { path: 'image-detail', loadChildren: './image-detail/image-detail.module#ImageDetailPageModule' },
-  { path: 'order-history', loadChildren: './order-history/order-history.module#OrderHistoryPageModule' },
   { path: 'order-search', loadChildren: './order-search/order-search.module#OrderSearchPageModule' },
   { path: 'order-detail', loadChildren: './order-detail/order-detail.module#OrderDetailPageModule' },
-  { path: 'pay-list', loadChildren: './pay-list/pay-list.module#PayListPageModule' },
   { path: 'pay-search', loadChildren: './pay-search/pay-search.module#PaySearchPageModule' },
   { path: 'my', loadChildren: './my/my.module#MyPageModule' },
   { path: 'my-message', loadChildren: './my-message/my-message.module#MyMessagePageModule' },
@@ -23,7 +21,8 @@ const routes: Routes = [
   { path: 'welcome', loadChildren: './welcome/welcome.module#WelcomePageModule' },
   { path: 'feedback', loadChildren: './feedback/feedback.module#FeedbackPageModule' },
   { path: 'order-view', loadChildren: './order-view/order-view.module#OrderViewPageModule' },
-  { path: 'change-password2', loadChildren: './change-password2/change-password2.module#ChangePassword2PageModule' },  { path: 'create-order', loadChildren: './create-order/create-order.module#CreateOrderPageModule' },
+  { path: 'change-password2', loadChildren: './change-password2/change-password2.module#ChangePassword2PageModule' },
+  { path: 'create-order', loadChildren: './create-order/create-order.module#CreateOrderPageModule' },
 
 ];
 @NgModule({

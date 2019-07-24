@@ -24,7 +24,6 @@ export class TabsPage implements OnInit {
   }
 
   ionViewDidEnter () {
-    this.events.publish('new');
     const user = this.common.checkLogin();
     if (user) {
       this.condition.token = user.token;

@@ -9,7 +9,7 @@
     <form #form="ngForm">
       <div class="ion-padding ion-margin-top">
         <div class="imgDiv">
-          <img *ngIf="!model.file_url" [src]="addImage" (click)="upload()" style="width: 100%;height: 100%;">
+          <img *ngIf="!model.file_url" [src]="addImage" (click)="upload()" style="width: 100%px;height: 100%;">
           <img *ngIf="model.file_url" [src]="model.file_url" (click)="gotoImageDetail()"
             style="width: 100%;height: 100%;">
         </div>
@@ -25,7 +25,7 @@
         <ion-input name="ladingBillNumber" [(ngModel)]="model.ladingBillNumber" type="text" placeholder="非必填">
         </ion-input>
       </ion-item>
-      <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>
+      <ion-button color="secondary" expand="block" class="ion-margin-top ion-padding" (click)="submit()">提交</ion-button>
     </form>
   
     <input id="imageUpload1" #imageUpload1 type="file" accept="image/*" style="display: none"

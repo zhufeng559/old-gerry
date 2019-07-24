@@ -3,7 +3,7 @@ import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AlertController, ActionSheetController, Events } from '@ionic/angular';
+import { AlertController, ActionSheetController, Events, NavController } from '@ionic/angular';
 import { StorageService } from '../../service/common/storage.service';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -17,10 +17,10 @@ import { DatePipe } from '@angular/common';
   selector: 'app-create-order',
   templateUrl: './create-order.page.html',
   styleUrls: ['./create-order.page.scss'],
+  providers:[DatePipe]
 })
 export class CreateOrderPage implements OnInit {
 
-  type = '1';
   model = {
     user_id: '',
     user_name: '',
@@ -54,11 +54,8 @@ export class CreateOrderPage implements OnInit {
     private camera: Camera,
     private transfer: FileTransfer,
     private sanitizer: DomSanitizer,
-    public datePipe: DatePipe, ) {
-      events.subscribe('new', (file) => {
-        this.type = '1';
-      });
-
+    public datePipe: DatePipe,
+    private nav: NavController ) {
       events.subscribe('deleteImg', () => {
         this.model.file_url = '';
         this.model.file_id = '';
@@ -100,31 +97,15 @@ export class CreateOrderPage implements OnInit {
      });
   }
 
-  ionViewDidEnter () {
-    console.log('OrderPage');
-    this.type = '1';
-    this.model.file_url = this.storage.read('order_image');
-    if (!this.model.file_url) {
-      this.model.file_id = '';
-      this.model.file_name = '';
+  async submit() {
+    if (this.model.file_id == '') {
+      this.common.errorSync('请上传图片');
+      return;
     }
     const user = this.common.checkLogin();
     if (user) {
       this.model.token = user.token;
       this.model.user_id = user.rows.userId;
-    }
-    this.model.ctnNo = '';
-    this.model.ladingBillNumber = '';
-    this.model.file_id = '';
-    this.model.file_url = '';
-    this.model.file_name = '';
-    this.form.reset();
-  }
-
-  async submit() {
-    if (this.model.file_id == '') {
-      this.common.errorSync('请上传图片');
-      return;
     }
     if (this.form.valid) {
       await this.common.showLoading();
@@ -140,6 +121,8 @@ export class CreateOrderPage implements OnInit {
           this.storage.write('order_image', '');
           this.form.reset();
           this.common.success();
+          this.events.publish('reload');
+          this.nav.pop();
         } else {
           this.common.errorSync(`建单错误{${r.resultNode}}`);
         }

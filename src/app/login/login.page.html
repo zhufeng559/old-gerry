@@ -19,11 +19,11 @@
         <ion-icon name="eye-off" *ngIf="!eye"></ion-icon>
       </ion-button>
     </ion-item>
-    <ion-button class="ion-padding-top" color="primary" expand="block" class="ion-margin-top" (click)="submit()"
+    <ion-button class="ion-padding-top" color="secondary" expand="block" class="ion-margin-top" (click)="submit()"
       [disabled]="(!model.userName)||(!model.password)">登录
     </ion-button>
-    <div class="ion-padding"><a style="float: left;text-decoration: none;" [routerLink]="['/register']">我要注册</a><a
-        style="float: right;text-decoration: none;" [routerLink]="['/forget-password']">忘记密码</a></div>
+    <div class="ion-padding"><a style="float: left;text-decoration: none;color:#7a9ad7;" [routerLink]="['/register']">我要注册</a><a
+        style="float: right;text-decoration: none;color:#7a9ad7;" [routerLink]="['/forget-password']">忘记密码</a></div>
   </form>
 
 </ion-content>

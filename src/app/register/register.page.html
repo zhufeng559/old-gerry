@@ -32,19 +32,19 @@
       <ion-icon slot="start" name="unlock"></ion-icon>
       <ion-input name="code" class="ion-no-padding" [(ngModel)]="model.code" type="text" placeholder="请输入验证码" required>
       </ion-input>
-      <ion-button #btnCode slot="end" color="primary" (click)="sendCode()">
+      <ion-button #btnCode slot="end" color="secondary" (click)="sendCode()">
         <ion-label>
           {{text}}
         </ion-label>
       </ion-button>
     </ion-item>
     <div class="ion-padding">
-      <ion-checkbox name="agree" style="vertical-align:middle;" [(ngModel)]="agree" slot="start" color="primary">
+      <ion-checkbox name="agree" style="vertical-align:middle;" [(ngModel)]="agree" slot="start" color="secondary">
       </ion-checkbox>
       <ion-label style="vertical-align:middle;margin-left: 5px;">我已阅读并同意 <a style="text-decoration: none;"
           [routerLink]="['/agreement']">{{agreement}}</a> </ion-label>
     </div>
-    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">注册</ion-button>
+    <ion-button color="secondary" expand="block" class="ion-margin-top" (click)="submit()">注册</ion-button>
   </form>
 
 </ion-content>

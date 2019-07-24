@@ -46,7 +46,7 @@ export class OrderViewPage implements OnInit {
   type;
 
   constructor(private http: HttpService,
-    private common: CommonService,
+    public common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,

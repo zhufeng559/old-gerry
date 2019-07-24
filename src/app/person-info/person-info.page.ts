@@ -33,6 +33,7 @@ export class PersonInfoPage implements OnInit {
     file_url: '',
     LicensePlate: '',
     DrivingPermit_id: '',
+    HangPlate: '',
   };
   @ViewChild('form') form: NgForm;
   user;
@@ -75,6 +76,7 @@ export class PersonInfoPage implements OnInit {
         this.model.nickName = this.model.nickname;
         this.model.LicensePlate = this.model.LicensePlate || '';
         this.model.DrivingPermit_id = this.model.DrivingPermit_id || '';
+        this.model.HangPlate = this.model.HangPlate || '';
       }
     });
   }

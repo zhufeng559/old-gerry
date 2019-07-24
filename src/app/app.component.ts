@@ -62,6 +62,10 @@ export class AppComponent {
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
         this.statusBar.styleDefault();
+        // let status bar overlay webview
+        this.statusBar.overlaysWebView(true);
+        // set status bar to white
+        this.statusBar.backgroundColorByHexString('#000000');
         setTimeout(() => {
           this.splashScreen.hide();
         }, 500);

@@ -54,7 +54,7 @@ export class OrderDetailPage implements OnInit {
   };
 
   constructor(private http: HttpService,
-    private common: CommonService,
+    public common: CommonService,
     public router: Router,
     public activeRoute: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,

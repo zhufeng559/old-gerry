@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, NavController } from '@ionic/angular';
 import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
@@ -23,7 +23,8 @@ export class MyMessagePage implements OnInit {
   constructor(private http: HttpService,
     public common: CommonService,
     public router: Router,
-    public activeRoute: ActivatedRoute, ) {
+    public activeRoute: ActivatedRoute,
+    private nav: NavController ) {
     }
 
   ngOnInit() {
