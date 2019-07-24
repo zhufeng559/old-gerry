@@ -23,7 +23,8 @@ const routes: Routes = [
   { path: 'welcome', loadChildren: './welcome/welcome.module#WelcomePageModule' },
   { path: 'feedback', loadChildren: './feedback/feedback.module#FeedbackPageModule' },
   { path: 'order-view', loadChildren: './order-view/order-view.module#OrderViewPageModule' },
-  { path: 'change-password2', loadChildren: './change-password2/change-password2.module#ChangePassword2PageModule' },
+  { path: 'change-password2', loadChildren: './change-password2/change-password2.module#ChangePassword2PageModule' },  { path: 'create-order', loadChildren: './create-order/create-order.module#CreateOrderPageModule' },
+
 ];
 @NgModule({
   imports: [

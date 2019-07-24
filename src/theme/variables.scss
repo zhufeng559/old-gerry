@@ -4,16 +4,14 @@
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-color-primary: #7a9ad7;
-  --ion-color-primary-rgb: 122,154,215;
+  --ion-color-primary: #2b333e;
+  --ion-color-primary-rgb: 34, 34, 34;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-color-primary-shade: #1e2023;
+  --ion-color-primary-tint: #383a3e;
   --ion-text-color:             #808080;
   --ion-text-color-rgb:         128,128,128;
   --ion-placeholder-color: #999999;
-  // --ion-background-color: #f2f2f2;
-  // --ion-background-color-rgb: 204,204,204;
-  // --ion-item-background: white;
+  --ion-background-color: #f7f7f7;
 }

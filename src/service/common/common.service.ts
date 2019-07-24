@@ -60,6 +60,13 @@ export class CommonService {
     }
   }
 
+  getInfo(val) {
+    if (!val) {
+      return '未填写';
+    }
+    return val;
+  }
+
   checkLogin() {
     const user = this.storage.read<any>('user');
     if (!user) {

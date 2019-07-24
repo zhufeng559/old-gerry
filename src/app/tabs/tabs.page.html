@@ -1,13 +1,13 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="order">
+      <span class="iconfont iconzhuangxiangdan"></span>
       <ion-label>装箱单</ion-label>
-      <ion-icon name="paper"></ion-icon>
     </ion-tab-button>
 
     <ion-tab-button tab="my">
+      <span class="iconfont iconziyuan"></span>
       <ion-label>我的</ion-label>
-      <ion-icon name="person"></ion-icon>
       <ion-badge *ngIf="count>0" color="danger">{{count}}</ion-badge>
     </ion-tab-button>
   </ion-tab-bar>

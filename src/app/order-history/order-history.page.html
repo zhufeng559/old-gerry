@@ -61,43 +61,6 @@
     </ion-item>
   </ion-card>
 
-
-  <!-- <ion-item-group *ngFor="let item of list">
-    <ion-item-divider>
-      <ion-label>订单编号:{{item?.bill_no}}</ion-label>
-    </ion-item-divider>
-    <ion-item lines="none">
-      <ion-thumbnail slot="start">
-        <img *ngIf="item?.file_url" [src]="item?.file_url">
-        <img *ngIf="!item?.file_url" src="assets/image/noImage.jpg">
-      </ion-thumbnail>
-      <ion-label>
-        <p>
-          箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：{{item?.ctnno}}
-        </p>
-        <p>
-          下单时间：{{item?.create_time | date:'MM-dd HH:mm'}}
-        </p>
-        <p>
-          订单状态：{{common.getStatusDesc(item.app_state)}}
-        </p>
-      </ion-label>
-    </ion-item>
-    <ion-item lines="none">
-      <ion-buttons slot="end">
-        <ion-button fill="solid" color="primary" *ngIf="item.state==0" (click)="cancelOrder(item)">
-          取消
-        </ion-button>
-        <ion-button fill="solid" color="primary" *ngIf="item.state<2||item.state==3" (click)='changeOrder(item)'>
-          修改
-        </ion-button>
-        <ion-button fill="solid" color="primary" *ngIf="item.state==8" (click)='reSendOrder(item)'>
-          重新发送
-        </ion-button>
-      </ion-buttons>
-    </ion-item>
-  </ion-item-group> -->
-
   <img class="ion-margin-top" src="assets/image/noData.png" *ngIf="list.length==0&&!common.isLoading">
   <p *ngIf="list.length==0&&!common.isLoading" class="ion-text-center">暂无数据</p>
 

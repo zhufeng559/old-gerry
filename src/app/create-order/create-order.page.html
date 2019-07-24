@@ -1,0 +1,34 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-title style="padding-right: 0;">建单</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+  
+    <form #form="ngForm">
+      <div class="ion-padding ion-margin-top">
+        <div class="imgDiv">
+          <img *ngIf="!model.file_url" [src]="addImage" (click)="upload()" style="width: 100%;height: 100%;">
+          <img *ngIf="model.file_url" [src]="model.file_url" (click)="gotoImageDetail()"
+            style="width: 100%;height: 100%;">
+        </div>
+        <p class="ion-text-center" *ngIf="!model.file_url">点击上传照片</p>
+      </div>
+      <ion-item>
+        <ion-label>箱&nbsp;&nbsp;&nbsp;号:</ion-label>
+        <ion-input name="ctnNo" [(ngModel)]="model.ctnNo" type="text" placeholder="非必填">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>提单号:</ion-label>
+        <ion-input name="ladingBillNumber" [(ngModel)]="model.ladingBillNumber" type="text" placeholder="非必填">
+        </ion-input>
+      </ion-item>
+      <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交</ion-button>
+    </form>
+  
+    <input id="imageUpload1" #imageUpload1 type="file" accept="image/*" style="display: none"
+      (change)="imageUpload(imageUpload1)" />
+  
+  </ion-content>

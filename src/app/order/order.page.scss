@@ -1,5 +1,13 @@
-.imgDiv{
-    width:150px;
+.imgDiv {
+    width: 150px;
     height: 150px;
-    margin:0 auto;
+    margin: 0 auto;
+}
+
+.billHead {
+    font-size: 14px !important;
+}
+
+ion-item {
+    --background: white !important;
 }
