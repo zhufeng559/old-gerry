@@ -82,7 +82,7 @@
             <ion-button
               fill="outline"
               color="primary"
-              [disabled]="!(item.state == 8)"
+              *ngIf="!(item.state >= 4&&item.state<=8)"
               (click)="reSendOrder(item)"
             >
               重新发送
