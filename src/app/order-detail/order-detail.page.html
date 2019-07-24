@@ -5,35 +5,71 @@
         <ion-icon mode="ios" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{model.bill_no}}</ion-title>
+    <ion-title>{{ model.bill_no }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <form #form="ngForm">
-    <ion-item>
-      <ion-label>箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</ion-label>
-      <ion-input style="text-align:right;" name="ctnno" [(ngModel)]="model.ctnno" type="text" placeholder="请输入箱号(可不填写)">
+    <ion-item line="none">
+      <ion-label>箱号:</ion-label>
+      <ion-input
+        style="text-align:right;"
+        name="ctnno"
+        [(ngModel)]="model.ctnno"
+        type="text"
+        placeholder="请输入箱号(可不填写)"
+      >
       </ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label>提&nbsp;单&nbsp;号:</ion-label>
-      <ion-input style="text-align:right;" name="ladingbillnumber" [(ngModel)]="model.ladingbillnumber" type="text"
-        placeholder="请输入箱号(可不填写)">
+    <ion-item line="none">
+      <ion-label>提单号:</ion-label>
+      <ion-input
+        style="text-align:right;"
+        name="ladingbillnumber"
+        [(ngModel)]="model.ladingbillnumber"
+        type="text"
+        placeholder="请输入提单号(可不填写)"
+      >
       </ion-input>
+    </ion-item>
+    <ion-item line="full">
+      <ion-label>订单状态:</ion-label>
+    </ion-item>
+    <ion-item line="none">
+      <ion-label>订单编号:</ion-label>
+    </ion-item>
+    <ion-item line="none">
+      <ion-label>退回原因:</ion-label>
+    </ion-item>
+    <ion-item line="full">
+      <ion-label>下单时间:</ion-label>
     </ion-item>
     <div class="ion-padding">
       <div class="imgDiv">
-        <img *ngIf="!model.file_url" [src]="addImage" (click)="upload()">
-        <img *ngIf="model.file_url" [src]="model.file_url" (click)="gotoImageDetail()">
+        <img *ngIf="!model.file_url" [src]="addImage" (click)="upload()" />
+        <img
+          *ngIf="model.file_url"
+          [src]="model.file_url"
+          (click)="gotoImageDetail()"
+        />
       </div>
     </div>
-    <input id="imageUpload2" #imageUpload2 type="file" accept="image/*" style="display: none"
-      (change)="imageUpload(imageUpload2)" />
+    <input
+      id="imageUpload2"
+      #imageUpload2
+      type="file"
+      accept="image/*"
+      style="display: none"
+      (change)="imageUpload(imageUpload2)"
+    />
 
-    <ion-button color="primary" expand="block" class="ion-margin-top" (click)="submit()">提交
+    <ion-button
+      color="primary"
+      expand="block"
+      class="ion-margin-top"
+      (click)="submit()"
+      >提交
     </ion-button>
   </form>
-
 </ion-content>

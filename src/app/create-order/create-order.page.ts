@@ -39,7 +39,7 @@ export class CreateOrderPage implements OnInit {
     sourceType: this.camera.PictureSourceType.CAMERA,
     allowEdit: false,
     mediaType: this.camera.MediaType.PICTURE,
-    saveToPhotoAlbum: false,
+    saveToPhotoAlbum: true,
     quality: 50,
   };
 

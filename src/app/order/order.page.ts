@@ -54,6 +54,9 @@ export class OrderPage implements OnInit {
     private sanitizer: DomSanitizer,
     public storage: StorageService,
     public datePipe: DatePipe, ) {
+      this.events.subscribe('reload', () => {
+        this.reload();
+      });
     }
 
   ngOnInit() {
@@ -268,5 +271,18 @@ export class OrderPage implements OnInit {
         }
       });
     }, 1000);
+  }
+
+  gotoSearchPage() {
+    if (this.type === 'order') {
+        this.router.navigate(['/order-search']);
+    }
+    if (this.type === 'bill') {
+      this.router.navigate(['/pay-search']);
+    }
+  }
+
+  gotoCreateOrder() {
+    this.router.navigate(['/create-order']);
   }
 }

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { StorageService } from '../../service/common/storage.service';
-import { NavController } from '@ionic/angular';
+import { NavController, Events } from '@ionic/angular';
 
 @Component({
   selector: 'app-pay-search',
@@ -27,7 +27,8 @@ export class PaySearchPage implements OnInit {
     public activeRoute: ActivatedRoute,
     public datePipe: DatePipe,
     public storage: StorageService,
-    public nav: NavController ) {
+    public nav: NavController,
+    private events: Events ) {
     }
 
   ngOnInit() {
@@ -51,7 +52,8 @@ export class PaySearchPage implements OnInit {
       start_time: this.datePipe.transform(this.model.start_date, 'yyyy-MM-dd'),
       end_time: this.datePipe.transform(this.model.end_date, 'yyyy-MM-dd'),
     });
-    this.router.navigate(['/pay-list']);
+    this.events.publish('reload');
+    this.nav.pop();
   }
 
   back() {

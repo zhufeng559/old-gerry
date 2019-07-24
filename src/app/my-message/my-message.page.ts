@@ -62,7 +62,7 @@ export class MyMessagePage implements OnInit {
   }
 
   getContent(item) {
-    return `箱号为${item.ctnno}的订单状态变更为${this.common.getStatusDesc(item.app_state)}，原因:${item.reason}，点击查看详情。`;
+    return `订单编号为${item.bill_no}的订单状态变更为${this.common.getStatusDesc(item.app_state)}，原因:${item.reason}，点击查看详情。`;
   }
 
   getReadDesc(item) {

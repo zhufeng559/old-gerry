@@ -3,7 +3,7 @@ import { HttpService } from '../../service/common/http.service';
 import { CommonService } from '../../service/common/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, Events } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
 import { StorageService } from '../../service/common/storage.service';
 
@@ -29,7 +29,8 @@ export class OrderSearchPage implements OnInit {
     public activeRoute: ActivatedRoute,
     public datePipe: DatePipe,
     public storage: StorageService,
-    public nav: NavController ) {
+    public nav: NavController,
+    private events: Events ) {
     }
 
   ngOnInit() {
@@ -72,8 +73,8 @@ export class OrderSearchPage implements OnInit {
       keyword: this.model.keyword,
       create_time: this.datePipe.transform(this.model.create_time, 'yyyy-MM-dd'),
     });
-
-    this.router.navigate(['/order-history']);
+    this.events.publish('reload');
+    this.nav.pop();
   }
 
   back() {
